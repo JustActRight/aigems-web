@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIGems — Never Miss a Free AI Opportunity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --page:#f0f2ee;
+  --w:#ffffff;
+  --g50:#eef5ec;
+  --g100:#d4eacf;
+  --g200:#a8d49f;
+  --g400:#5a9e50;
+  --g600:#3a7432;
+  --g800:#224720;
+  --ink:#111410;
+  --ink2:#4a5246;
+  --ink3:#9aa394;
+  --br:#e4e8e1;
+  --br2:#cdd4c8;
+  --r:14px;--rl:18px;
+  --sh:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --shm:0 4px 16px rgba(0,0,0,.09)
+}
+body{background:var(--page);color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh}
+
+/* ── NAV ── */
+nav{background:var(--page);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--br)}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.lbadge{background:var(--ink);color:var(--w);border-radius:10px;padding:6px 12px;font-size:13px;font-weight:700;letter-spacing:-.3px}
+.lname{font-size:17px;font-weight:700;letter-spacing:-.4px}
+.navr{display:flex;gap:8px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;border-radius:100px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13.5px;font-weight:600;cursor:pointer;border:none;text-decoration:none;transition:all .15s;white-space:nowrap}
+.bt-ghost{background:var(--w);color:var(--ink2);border:1px solid var(--br2)}
+.bt-ghost:hover{background:var(--w);color:var(--ink);border-color:var(--ink2)}
+.bt-dark{background:var(--ink);color:var(--w)}
+.bt-dark:hover{background:#2a2e28}
+.bt-green{background:var(--g600);color:#fff}
+.bt-green:hover{background:var(--g800)}
+
+/* ── HERO ── */
+.hero{padding:48px 24px 40px;max-width:700px}
+.hero-wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.htag{display:inline-flex;align-items:center;gap:7px;background:var(--w);border:1px solid var(--br);border-radius:100px;padding:5px 14px 5px 10px;font-size:12.5px;font-weight:600;color:var(--ink2);margin-bottom:20px}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--g400);animation:ld 2s infinite}
+@keyframes ld{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-size:clamp(2.4rem,5.5vw,3.8rem);font-weight:800;line-height:1.05;letter-spacing:-2px;color:var(--ink);margin-bottom:14px}
+.hero h1 span{color:var(--g600)}
+.hero-sub{font-size:16px;font-weight:400;color:var(--ink2);max-width:520px;line-height:1.65;margin-bottom:32px}
+
+/* SEARCH */
+.srow{display:flex;gap:10px;flex-wrap:wrap;max-width:560px}
+.sbox{position:relative;flex:1;min-width:240px}
+.sbox svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--ink3);pointer-events:none}
+#search{width:100%;padding:13px 14px 13px 42px;background:var(--w);border:1.5px solid var(--br2);border-radius:100px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:500;color:var(--ink);outline:none;transition:all .2s;box-shadow:var(--sh)}
+#search:focus{border-color:var(--g400);box-shadow:0 0 0 3px rgba(90,158,80,.1)}
+#search::placeholder{color:var(--ink3);font-weight:400}
+
+/* ── STATS STRIP ── */
+.stats-strip{display:flex;gap:10px;padding:0 24px 32px;max-width:1120px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.stats-strip::-webkit-scrollbar{display:none}
+.scard{background:var(--w);border:1px solid var(--br);border-radius:var(--rl);padding:16px 20px;white-space:nowrap;box-shadow:var(--sh);min-width:120px}
+.sc-n{font-size:24px;font-weight:800;letter-spacing:-1px;color:var(--ink);line-height:1}
+.sc-l{font-size:12px;font-weight:500;color:var(--ink3);margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
+
+/* ── FILTER SECTION ── */
+.fsec{padding:0 24px;max-width:1120px;margin:0 auto}
+.f-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--ink3);margin-bottom:10px}
+.pills{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.pills::-webkit-scrollbar{display:none}
+.pill{padding:9px 20px;border-radius:100px;background:var(--w);border:1.5px solid var(--br);color:var(--ink2);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .15s;box-shadow:var(--sh)}
+.pill:hover{border-color:var(--g200);background:var(--g50);color:var(--ink)}
+.pill.on{background:var(--ink);border-color:var(--ink);color:#fff;box-shadow:none}
+
+/* CONTROLS */
+.ctls{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 0 20px;flex-wrap:wrap}
+.togrow{display:flex;align-items:center;gap:0;cursor:pointer;user-select:none;background:var(--w);border:1.5px solid var(--br);border-radius:100px;padding:8px 16px 8px 10px;box-shadow:var(--sh);gap:10px}
+.tog{width:36px;height:20px;border-radius:100px;background:var(--br2);position:relative;transition:background .2s;flex-shrink:0}
+.tog.on{background:var(--g400)}
+.tog::after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.tog.on::after{transform:translateX(16px)}
+.togl{font-size:13px;font-weight:600;color:var(--ink2)}
+.srt-wrap{background:var(--w);border:1.5px solid var(--br);border-radius:100px;padding:8px 16px;box-shadow:var(--sh)}
+#srt{border:none;background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;color:var(--ink2);outline:none;cursor:pointer}
+
+/* ── GRID ── */
+.gwrap{padding:0 24px 64px;max-width:1120px;margin:0 auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+
+/* ── CARD ── */
+.card{background:var(--w);border:1.5px solid var(--br);border-radius:var(--rl);padding:22px;display:flex;flex-direction:column;gap:11px;transition:transform .15s,box-shadow .15s,border-color .15s;box-shadow:var(--sh);cursor:default}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shm);border-color:var(--br2)}
+.card.exp{opacity:.4;pointer-events:none}
+.ctop{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.cbadge{padding:4px 12px;border-radius:100px;font-size:11.5px;font-weight:700;letter-spacing:.2px;text-transform:capitalize}
+.cb-credits{background:#eff6ff;color:#1d4ed8}
+.cb-course{background:var(--g50);color:var(--g600)}
+.cb-beta{background:#f5f3ff;color:#6d28d9}
+.cb-coupon{background:#fff7ed;color:#c2410c}
+.cb-scholarship{background:#fefce8;color:#92400e}
+.cb-tool{background:#f0fdf4;color:#15803d}
+.cb-resource{background:#fdf2f8;color:#9d174d}
+.sdot{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600;white-space:nowrap}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.da{background:var(--g400)}.la{color:var(--g600)}
+.de{background:#f59e0b}.le{color:#b45309}
+.dx{background:var(--ink3)}.lx{color:var(--ink3)}
+.ctitle{font-size:16px;font-weight:700;color:var(--ink);line-height:1.3;letter-spacing:-.3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cdesc{font-size:13.5px;color:var(--ink2);line-height:1.55;flex:1;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-weight:400}
+.cmeta{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.csrc{font-size:12px;color:var(--ink3);display:flex;align-items:center;gap:5px;font-weight:500}
+.cexp{font-size:11.5px;padding:3px 10px;border-radius:100px;font-weight:600}
+.ex-ok{background:#f0f2ee;color:var(--ink3)}
+.ex-sn{background:#fffbeb;color:#b45309}
+.ex-ug{background:#fef2f2;color:#b91c1c}
+.cfoot{display:flex;gap:8px;align-items:center;padding-top:8px;border-top:1.5px solid var(--br);margin-top:2px}
+.bgrab{flex:1;padding:10px 14px;background:var(--page);border:1.5px solid var(--br2);border-radius:100px;color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;text-align:center;letter-spacing:-.1px}
+.bgrab:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+.bgrab:disabled{opacity:.4;cursor:not-allowed}
+.bshr{width:38px;height:38px;border-radius:100px;background:var(--page);border:1.5px solid var(--br2);color:var(--ink3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+.bshr:hover{background:var(--w);color:var(--ink);border-color:var(--ink2)}
+
+/* VERIFIED GLOW */
+.card.verified{border-color:var(--g100)}
+
+/* ── SKELETON ── */
+.sk-card{background:var(--w);border:1.5px solid var(--br);border-radius:var(--rl);padding:22px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--sh)}
+.sk{background:var(--page);border-radius:8px;animation:skp 1.6s ease-in-out infinite}
+@keyframes skp{0%,100%{opacity:.7}50%{opacity:1}}
+
+/* ── EMPTY ── */
+.empty{grid-column:1/-1;text-align:center;padding:80px 24px;color:var(--ink3)}
+.empty h3{font-size:18px;font-weight:700;color:var(--ink2);margin-bottom:8px}
+.empty p{font-size:14px}
+
+/* ── SECTION HEADING ── */
+.sec-head{max-width:1120px;margin:0 auto;padding:32px 24px 16px;display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.sec-head h2{font-size:22px;font-weight:800;letter-spacing:-.6px}
+.sec-head span{font-size:13px;color:var(--ink3);font-weight:500}
+
+/* ── ABOUT ── */
+.about-wrap{max-width:1120px;margin:0 auto;padding:0 24px 64px}
+.about-card{background:var(--w);border:1.5px solid var(--br);border-radius:var(--rl);padding:40px;box-shadow:var(--sh);display:flex;gap:40px;align-items:center;flex-wrap:wrap}
+.about-txt{flex:1;min-width:260px}
+.about-txt h2{font-size:26px;font-weight:800;letter-spacing:-.8px;margin-bottom:12px}
+.about-txt p{font-size:14.5px;color:var(--ink2);line-height:1.75;margin-bottom:20px}
+.about-aside{flex-shrink:0}
+.radar-badge{background:var(--page);border:1.5px solid var(--br);border-radius:var(--rl);padding:20px 24px;text-align:center;min-width:160px}
+.radar-badge .big{font-size:36px;font-weight:800;letter-spacing:-1.5px;color:var(--ink);line-height:1}
+.radar-badge .sm{font-size:12px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.6px;margin-top:4px}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--br);padding:24px;text-align:center;font-size:13px;color:var(--ink3);font-weight:500}
+footer a{color:var(--ink2);text-decoration:none}
+footer a:hover{color:var(--g600)}
+
+/* ── PAGES ── */
+.page{display:none}.page.active{display:block}
+
+/* ── SUBMIT ── */
+.sub-wrap{max-width:560px;margin:0 auto;padding:40px 24px 64px}
+.sub-wrap h1{font-size:32px;font-weight:800;letter-spacing:-1px;margin-bottom:8px}
+.sub-wrap>p{font-size:15px;color:var(--ink2);margin-bottom:32px;line-height:1.65}
+.fcard{background:var(--w);border:1.5px solid var(--br);border-radius:var(--rl);padding:28px;box-shadow:var(--sh)}
+.fg{margin-bottom:18px}
+.fg label{display:block;font-size:12px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px}
+.req{color:var(--g600)}
+.fi{width:100%;padding:11px 14px;border:1.5px solid var(--br2);border-radius:var(--r);background:var(--page);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:500;color:var(--ink);outline:none;transition:all .2s}
+.fi:focus{border-color:var(--g400);background:var(--w);box-shadow:0 0 0 3px rgba(90,158,80,.08)}
+.fi::placeholder{color:var(--ink3);font-weight:400}
+textarea.fi{resize:vertical;min-height:88px}
+.ok-box{text-align:center;padding:56px 24px;display:none}
+.ok-icon{width:56px;height:56px;background:var(--g50);border:1.5px solid var(--g100);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:22px}
+.ok-box h3{font-size:22px;font-weight:800;letter-spacing:-.5px;margin-bottom:8px}
+.ok-box p{color:var(--ink2);font-size:14.5px;margin-bottom:24px}
+
+/* ── MODAL ── */
+.ov{position:fixed;inset:0;background:rgba(10,20,8,.4);backdrop-filter:blur(4px);z-index:999;display:none;align-items:center;justify-content:center;padding:24px}
+.ov.open{display:flex}
+.modal{background:var(--w);border:1.5px solid var(--br);border-radius:var(--rl);padding:32px;max-width:400px;width:100%;position:relative;box-shadow:var(--shm)}
+.mx{position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:100px;background:var(--page);border:1.5px solid var(--br);color:var(--ink3);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;font-weight:700}
+.mx:hover{color:var(--ink);border-color:var(--br2)}
+.modal h2{font-size:22px;font-weight:800;letter-spacing:-.6px;margin-bottom:6px}
+.modal>p{font-size:14px;color:var(--ink2);margin-bottom:24px;line-height:1.6}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--ink);color:#fff;border-radius:100px;padding:12px 20px;font-size:13.5px;font-weight:600;z-index:9999;opacity:0;transform:translateY(10px);transition:all .25s;pointer-events:none;letter-spacing:-.1px}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.ok{background:var(--g600)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  nav,footer{padding-left:16px;padding-right:16px}
+  .hero-wrap,.fsec,.gwrap,.stats-strip,.sec-head,.about-wrap{padding-left:16px;padding-right:16px}
+  .hero{padding:36px 0 28px}
+  .grid{grid-template-columns:1fr}
+  .about-card{padding:24px;gap:24px}
+  .tg2{grid-template-columns:1fr!important}
+  .sub-wrap{padding:32px 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#" onclick="showPage('home')">
+    <span class="lbadge">AG</span>
+    <span class="lname">AIGems</span>
+  </a>
+  <div class="navr">
+    <button class="btn bt-ghost" onclick="showPage('submit')">Submit a Gem</button>
+    <button class="btn bt-dark" onclick="openOv('sub')">Subscribe</button>
+  </div>
+</nav>
+
+<!-- ══ HOME ══ -->
+<div id="page-home" class="page active">
+
+  <div class="hero-wrap">
+    <div class="hero">
+      <div class="htag"><span class="live-dot"></span>Live radar — scanning every 4 hours</div>
+      <h1>Never miss a<br><span>free AI</span><br>opportunity.</h1>
+      <p class="hero-sub">We scan company blogs, newsletters and developer communities so you always find free credits, beta access, courses and deals — before they expire.</p>
+      <div class="srow">
+        <div class="sbox">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="search" placeholder="Search — try 'credits', 'free course'..." oninput="go()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-strip">
+    <div class="scard"><div class="sc-n" id="tc">—</div><div class="sc-l">Gems Found</div></div>
+    <div class="scard"><div class="sc-n" id="ac">—</div><div class="sc-l">Active Now</div></div>
+    <div class="scard"><div class="sc-n">7</div><div class="sc-l">Categories</div></div>
+    <div class="scard"><div class="sc-n">4hr</div><div class="sc-l">Refresh Rate</div></div>
+  </div>
+
+  <!-- SECTION HEAD -->
+  <div class="sec-head">
+    <h2>All Opportunities</h2>
+    <span id="showing-count"></span>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="fsec">
+    <div class="pills">
+      <button class="pill on" data-c="all" onclick="setC(this)">All</button>
+      <button class="pill" data-c="credits" onclick="setC(this)">💳 Credits</button>
+      <button class="pill" data-c="course" onclick="setC(this)">📚 Courses</button>
+      <button class="pill" data-c="beta" onclick="setC(this)">🧪 Beta</button>
+      <button class="pill" data-c="coupon" onclick="setC(this)">🏷️ Coupons</button>
+      <button class="pill" data-c="scholarship" onclick="setC(this)">🎓 Scholarships</button>
+      <button class="pill" data-c="tool" onclick="setC(this)">🛠️ Tools</button>
+      <button class="pill" data-c="resource" onclick="setC(this)">📦 Resources</button>
+    </div>
+    <div class="ctls">
+      <div class="togrow" onclick="togAct()">
+        <div class="tog on" id="tog"></div>
+        <span class="togl">Active only</span>
+      </div>
+      <div class="srt-wrap">
+        <select id="srt" onchange="go()">
+          <option value="new">Newest first</option>
+          <option value="exp">Expiring soon</option>
+          <option value="pop">Most grabbed</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRID -->
+  <div class="gwrap">
+    <div class="grid" id="grid">
+      <div class="sk-card"><div class="sk" style="height:20px;width:50%"></div><div class="sk" style="height:16px;width:35%"></div><div class="sk" style="height:60px"></div><div class="sk" style="height:38px"></div></div>
+      <div class="sk-card"><div class="sk" style="height:20px;width:58%"></div><div class="sk" style="height:16px;width:40%"></div><div class="sk" style="height:60px"></div><div class="sk" style="height:38px"></div></div>
+      <div class="sk-card"><div class="sk" style="height:20px;width:44%"></div><div class="sk" style="height:16px;width:32%"></div><div class="sk" style="height:60px"></div><div class="sk" style="height:38px"></div></div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="about-wrap">
+    <div class="about-card">
+      <div class="about-txt">
+        <h2>What is AIGems?</h2>
+        <p>AIGems is a free radar for the AI community. Our automated system scans company blogs, Hacker News, newsletters and developer communities every 4 hours — surfacing free credits, beta invites, scholarships, courses and deals so you never miss out.</p>
+        <p>Found something we missed? Submit it and help the whole community.</p>
+        <button class="btn bt-dark" onclick="showPage('submit')">Submit a Gem →</button>
+      </div>
+      <div class="about-aside">
+        <div class="radar-badge">
+          <div class="big">4hr</div>
+          <div class="sm">Scan cycle</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Built for the AI community &nbsp;·&nbsp;
+    <a href="#" onclick="showPage('submit')">Submit a Gem</a>
+  </footer>
+</div>
+
+<!-- ══ SUBMIT ══ -->
+<div id="page-submit" class="page">
+  <div class="sub-wrap">
+    <button class="btn bt-ghost" onclick="showPage('home')" style="margin-bottom:28px">← Back</button>
+    <h1>Submit a Gem</h1>
+    <p>Found a free AI opportunity? Share it — help fellow enthusiasts never miss a freebie.</p>
+
+    <div class="fcard" id="fw">
+      <div class="fg"><label>Title <span class="req">*</span></label><input class="fi" type="text" id="st" placeholder="e.g. Replit AIDVANTAGE — 3 months free"></div>
+      <div class="fg"><label>Description</label><textarea class="fi" id="sd" placeholder="Describe what the free opportunity offers..."></textarea></div>
+      <div class="fg"><label>Category <span class="req">*</span></label>
+        <select class="fi" id="sc">
+          <option value="">Select category...</option>
+          <option value="credits">💳 Credits</option>
+          <option value="course">📚 Course</option>
+          <option value="beta">🧪 Beta Access</option>
+          <option value="coupon">🏷️ Coupon / Promo Code</option>
+          <option value="scholarship">🎓 Scholarship</option>
+          <option value="tool">🛠️ Free Tool</option>
+          <option value="resource">📦 Resource</option>
+        </select>
+      </div>
+      <div class="fg"><label>Source URL <span class="req">*</span></label><input class="fi" type="url" id="su" placeholder="https://..."></div>
+      <div class="fg"><label>Source Name <span class="req">*</span></label><input class="fi" type="text" id="ss" placeholder="e.g. OpenAI Blog, GitHub Education"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px" class="tg2">
+        <div class="fg"><label>Expiry <span style="color:var(--ink3);font-weight:500;text-transform:none;font-size:11px">(optional)</span></label><input class="fi" type="date" id="se"></div>
+        <div class="fg"><label>Your Name <span style="color:var(--ink3);font-weight:500;text-transform:none;font-size:11px">(optional)</span></label><input class="fi" type="text" id="sn" placeholder="Anonymous"></div>
+      </div>
+      <button class="btn bt-dark" onclick="doSub()" style="width:100%;justify-content:center;padding:13px;font-size:14.5px;border-radius:100px">Submit Gem</button>
+    </div>
+
+    <div class="ok-box" id="sok">
+      <div class="ok-icon">✦</div>
+      <h3>Gem submitted!</h3>
+      <p>We'll review it and add it to the radar soon. Thank you for helping the community.</p>
+      <button class="btn bt-ghost" onclick="resetSub()">Submit another</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="ov" id="ov-sub" onclick="ovOut(event,'sub')">
+  <div class="modal">
+    <button class="mx" onclick="closeOv('sub')">✕</button>
+    <h2>Get gems in your inbox</h2>
+    <p>Free AI opportunities, delivered weekly. No spam — only the good stuff.</p>
+    <div id="mf">
+      <div class="fg"><label>Email address</label><input class="fi" type="email" id="me" placeholder="you@email.com"></div>
+      <button class="btn bt-dark" onclick="doSub2()" style="width:100%;justify-content:center;padding:12px;border-radius:100px">Subscribe — It's Free</button>
+    </div>
+    <div id="mok" style="display:none;text-align:center;padding:20px 0">
+      <div class="ok-icon" style="margin-bottom:14px">✦</div>
+      <p style="font-size:15px;font-weight:700;color:var(--g600)">You're in — gems incoming!</p>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SB_URL='https://jnxknsuhxbbtawvjacml.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpueGtuc3VoeGJidGF3dmphY21sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNDI1OTMsImV4cCI6MjA4ODkxODU5M30.hn5xAjaHgm2qr18rbYP52zyrEnSdYpKsAF1Oiz47eng';
+const sb=supabase.createClient(SB_URL,SB_KEY);
+let rows=[],ao=true,cat='all';
+
+async function init(){
+  const{data}=await sb.from('opportunities').select('*').order('created_at',{ascending:false});
+  rows=data||[];
+  document.getElementById('tc').textContent=rows.length;
+  document.getElementById('ac').textContent=rows.filter(o=>o.status==='active').length;
+  go();
+}
+
+function setC(el){
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('on'));
+  el.classList.add('on'); cat=el.dataset.c; go();
+}
+
+function togAct(){
+  ao=!ao;
+  document.getElementById('tog').classList.toggle('on',ao); go();
+}
+
+function go(){
+  const q=document.getElementById('search').value.toLowerCase();
+  const s=document.getElementById('srt').value;
+  let r=rows.filter(o=>{
+    if(ao&&o.status==='expired')return false;
+    if(cat!=='all'&&o.category!==cat)return false;
+    if(q&&!o.title.toLowerCase().includes(q)&&!(o.description||'').toLowerCase().includes(q))return false;
+    return true;
+  });
+  if(s==='exp')r.sort((a,b)=>!a.expiry_date?1:!b.expiry_date?-1:new Date(a.expiry_date)-new Date(b.expiry_date));
+  else if(s==='pop')r.sort((a,b)=>(b.clicks||0)-(a.clicks||0));
+  document.getElementById('showing-count').textContent=r.length+' gem'+(r.length!==1?'s':'');
+  paint(r);
+}
+
+function paint(r){
+  const g=document.getElementById('grid');
+  if(!r.length){
+    g.innerHTML='<div class="empty"><h3>No gems found</h3><p>Try adjusting your search or filter.</p></div>';
+    return;
+  }
+  g.innerHTML=r.map(mk).join('');
+}
+
+function mk(o){
+  const ex=o.status==='expired';
+  const sm={
+    active:`<div class="sdot"><span class="dot da"></span><span class="la">Active</span></div>`,
+    expiring_soon:`<div class="sdot"><span class="dot de"></span><span class="le">Expiring Soon</span></div>`,
+    expired:`<div class="sdot"><span class="dot dx"></span><span class="lx">Expired</span></div>`
+  };
+  return`<div class="card${ex?' exp':''}${o.verified?' verified':''}">
+    <div class="ctop"><span class="cbadge cb-${o.category}">${o.category}</span>${sm[o.status]||''}</div>
+    <div class="ctitle">${e(o.title)}</div>
+    <div class="cdesc">${e(o.description)}</div>
+    <div class="cmeta">
+      <div class="csrc">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        ${e(o.source_name)}${o.verified?' <span style="color:var(--g400);font-size:10.5px;margin-left:3px;font-weight:700">✓</span>':''}
+      </div>
+      ${o.expiry_date?expB(o.expiry_date):''}
+    </div>
+    <div class="cfoot">
+      <button class="bgrab"${ex?' disabled':''} onclick="grab('${o.id}','${ea(o.source_url)}')">${ex?'Expired':'Grab This Gem →'}</button>
+      <button class="bshr" onclick="shr('${ea(o.title)}','${ea(o.source_url)}')" title="Share">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </button>
+    </div>
+  </div>`;
+}
+
+function expB(d){
+  const diff=Math.floor((new Date(d)-new Date().setHours(0,0,0,0))/86400000);
+  if(diff<0)return'';
+  if(diff===0)return'<span class="cexp ex-ug">Expires today</span>';
+  if(diff<=7)return`<span class="cexp ex-sn">${diff}d left</span>`;
+  return`<span class="cexp ex-ok">Exp. ${new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span>`;
+}
+
+async function grab(id,url){
+  window.open(url,'_blank');
+  const{data:r}=await sb.from('opportunities').select('clicks').eq('id',id).single();
+  await sb.from('opportunities').update({clicks:(r?.clicks||0)+1}).eq('id',id);
+}
+
+function shr(title,url){
+  navigator.clipboard.writeText(`${title} — Free AI gem on AIGems ${url}`)
+    .then(()=>toast('Copied to clipboard','ok'));
+}
+
+async function doSub2(){
+  const em=document.getElementById('me').value.trim();
+  if(!em||!em.includes('@')){toast('Enter a valid email');return;}
+  const{error}=await sb.from('subscribers').insert({email:em});
+  if(error?.code==='23505'){toast('Already subscribed!');return;}
+  if(error){toast('Something went wrong');return;}
+  document.getElementById('mf').style.display='none';
+  document.getElementById('mok').style.display='block';
+}
+
+async function doSub(){
+  const t=document.getElementById('st').value.trim();
+  const c=document.getElementById('sc').value;
+  const u=document.getElementById('su').value.trim();
+  const s=document.getElementById('ss').value.trim();
+  if(!t||!c||!u||!s){toast('Please fill in all required fields');return;}
+  const{error}=await sb.from('submissions').insert({
+    title:t,description:document.getElementById('sd').value.trim(),
+    category:c,source_url:u,source_name:s,
+    expiry_date:document.getElementById('se').value||null,
+    submitted_by:document.getElementById('sn').value.trim()||'Anonymous'
+  });
+  if(error){toast('Something went wrong');return;}
+  document.getElementById('fw').style.display='none';
+  document.getElementById('sok').style.display='block';
+}
+
+function resetSub(){
+  document.getElementById('fw').style.display='block';
+  document.getElementById('sok').style.display='none';
+  ['st','sd','su','ss','sn','se'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('sc').value='';
+}
+
+function showPage(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  window.scrollTo(0,0);
+}
+function openOv(id){document.getElementById('ov-'+id).classList.add('open')}
+function closeOv(id){document.getElementById('ov-'+id).classList.remove('open')}
+function ovOut(e,id){if(e.target===e.currentTarget)closeOv(id)}
+
+let _t;
+function toast(msg,type=''){
+  clearTimeout(_t);const el=document.getElementById('toast');
+  el.textContent=msg;el.className=`toast ${type} show`;
+  _t=setTimeout(()=>el.classList.remove('show'),2800);
+}
+function e(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function ea(s){return String(s||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
+
+init();
+</script>
+</body>
+</html>
