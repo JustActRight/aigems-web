@@ -721,16 +721,19 @@ function scoreGem(gem){
 
 /* ─── INIT ─── */
 async function init(){
-  // Load gems immediately — don't wait for auth
-  sb.from('opportunities').select('*').order('created_at',{ascending:false}).then(({data})=>{
+  // Load gems immediately — completely independent of auth
+  try{
+    const{data,error}=await sb.from('opportunities').select('*').order('created_at',{ascending:false});
+    if(error)throw error;
     gems=data||[];
     document.getElementById('tc').textContent=gems.length;
     document.getElementById('ac').textContent=gems.filter(o=>o.status==='active').length;
     go();
-    // Re-render For You once gems are loaded if user already resolved
-    if(user)renderPersonalised();
-  });
-  // Auth listener — fires once on load, then on every change
+  }catch(err){
+    console.error('Gems load failed:',err);
+    document.getElementById('grid').innerHTML='<div class="empty"><h3>Could not load gems</h3><p>Please refresh the page.</p></div>';
+  }
+  // Auth listener
   sb.auth.onAuthStateChange(async(event,session)=>{
     user=session?.user||null;
     if(user){
@@ -738,8 +741,13 @@ async function init(){
         const{data}=await sb.from('user_profiles').select('*').eq('id',user.id).single();
         profile=data;
       }catch{profile=null;}
-      // Load claimed gems
-      await loadClaimedGems();
+      try{
+        await loadClaimedGems();
+      }catch{
+        // Table may not exist yet — degrade gracefully
+        claimedGems=new Set();
+        renderSavings();
+      }
     }else{
       profile=null;
       claimedGems=new Set();
@@ -747,7 +755,6 @@ async function init(){
     renderNav();
     renderPersonalised();
     renderSavings();
-    // If signed out — go to home and show guest nav immediately
     if(event==='SIGNED_OUT'){
       showPage('home');
       window.scrollTo(0,0);
@@ -863,19 +870,22 @@ async function claimGem(id){
 
 function renderSavings(){
   const sec=document.getElementById('savings-section');
+  if(!sec)return;
   if(!user){sec.style.display='none';return;}
   sec.style.display='block';
-  // Sum values of claimed gems
   const claimedList=gems.filter(g=>claimedGems.has(g.id));
   const total=claimedList.reduce((s,g)=>s+(g.gem_value_usd||0),0);
   const count=claimedGems.size;
-  document.getElementById('savings-total').textContent=total.toLocaleString();
-  document.getElementById('savings-gems-count').textContent=count?`${count} gem${count!==1?'s':''} claimed`:'';
-  document.getElementById('savings-sub').textContent=
+  const totalEl=document.getElementById('savings-total');
+  const subEl=document.getElementById('savings-sub');
+  const countEl=document.getElementById('savings-gems-count');
+  const shareBtn=document.getElementById('btn-share-savings');
+  if(totalEl)totalEl.textContent=total.toLocaleString();
+  if(countEl)countEl.textContent=count?`${count} gem${count!==1?'s':''} claimed`:'';
+  if(subEl)subEl.textContent=
     count===0?'Claim gems below to start tracking your savings':
     total===0?`${count} gem${count!==1?'s':''} claimed — values coming soon`:
     `Across ${count} claimed gem${count!==1?'s':''}`;
-  const shareBtn=document.getElementById('btn-share-savings');
   if(shareBtn)shareBtn.style.display=total>0?'inline-flex':'none';
 }
 
