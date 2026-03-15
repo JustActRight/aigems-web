@@ -398,7 +398,7 @@ textarea.fi{resize:vertical;min-height:88px}
     <div class="auth-card">
       <div class="fg"><label>Email <span class="req">*</span></label><input class="fi" type="email" id="au-email" placeholder="you@email.com"></div>
       <div class="fg"><label>Password <span class="req">*</span></label><input class="fi" type="password" id="au-pass" placeholder="Min. 6 characters"></div>
-      <button class="btn bt-dark" onclick="doSignup()" style="width:100%;justify-content:center;padding:13px;border-radius:100px;font-size:14.5px">Create Account</button>
+      <button id="signup-btn" class="btn bt-dark" onclick="doSignup()" style="width:100%;justify-content:center;padding:13px;border-radius:100px;font-size:14.5px">Create Account</button>
     </div>
     <p class="auth-switch">Already have an account? <a onclick="showPage('login')">Sign in</a></p>
   </div>
@@ -413,7 +413,7 @@ textarea.fi{resize:vertical;min-height:88px}
     <div class="auth-card">
       <div class="fg"><label>Email</label><input class="fi" type="email" id="li-email" placeholder="you@email.com"></div>
       <div class="fg"><label>Password</label><input class="fi" type="password" id="li-pass" placeholder="Your password"></div>
-      <button class="btn bt-dark" onclick="doLogin()" style="width:100%;justify-content:center;padding:13px;border-radius:100px;font-size:14.5px">Sign In</button>
+      <button id="login-btn" class="btn bt-dark" onclick="doLogin()" style="width:100%;justify-content:center;padding:13px;border-radius:100px;font-size:14.5px">Sign In</button>
     </div>
     <p class="auth-switch">No account yet? <a onclick="showPage('signup')">Create one free</a></p>
   </div>
@@ -860,14 +860,13 @@ async function doSignup(){
   if(!email||!pass){toast('Please fill in both fields','err');return;}
   if(!email.includes('@')){toast('Enter a valid email address','err');return;}
   if(pass.length<6){toast('Password must be at least 6 characters','err');return;}
-  const btn=document.querySelector('#page-signup .btn');
+  const btn=document.getElementById('signup-btn');
   btn.textContent='Creating account...';btn.disabled=true;
   const{data,error}=await sb.auth.signUp({email,password:pass});
   btn.textContent='Create Account';btn.disabled=false;
   if(error){
     if(error.message.toLowerCase().includes('already registered')||error.message.toLowerCase().includes('already been registered')){
       toast('Account exists — signing you in...','ok');
-      // Auto attempt login with same credentials
       const{error:le}=await sb.auth.signInWithPassword({email,password:pass});
       if(!le){showPage('home');return;}
       setTimeout(()=>showPage('login'),1200);
@@ -878,18 +877,17 @@ async function doSignup(){
     }
     return;
   }
-  // If we have a session immediately = email confirmation is OFF → go to onboarding
   if(data?.session){
     showPage('onboarding');
     resetOnboarding();
     return;
   }
-  // Email confirmation is ON → show inbox message
+  // Email confirmation ON — show inbox message
   document.querySelector('#page-signup .auth-card').innerHTML=`
     <div style="text-align:center;padding:8px 0">
       <div style="font-size:40px;margin-bottom:16px">📬</div>
       <h3 style="font-size:18px;font-weight:800;letter-spacing:-.4px;margin-bottom:10px">Check your inbox</h3>
-      <p style="font-size:14px;color:var(--ink2);line-height:1.7">We sent a confirmation link to<br><strong>${email}</strong><br><br>Click the link in that email, then come back here to sign in.</p>
+      <p style="font-size:14px;color:var(--ink2);line-height:1.7">We sent a confirmation link to<br><strong>${email}</strong><br><br>Click the link in that email then come back to sign in.</p>
       <button class="btn bt-dark" onclick="showPage('login')" style="margin-top:24px;width:100%;justify-content:center;padding:12px;border-radius:100px">Go to Sign In</button>
     </div>`;
 }
@@ -898,7 +896,7 @@ async function doLogin(){
   const email=document.getElementById('li-email').value.trim();
   const pass=document.getElementById('li-pass').value;
   if(!email||!pass){toast('Please fill in both fields','err');return;}
-  const btn=event.target;
+  const btn=document.getElementById('login-btn');
   btn.textContent='Signing in...';btn.disabled=true;
   const{error}=await sb.auth.signInWithPassword({email,password:pass});
   btn.textContent='Sign In';btn.disabled=false;
@@ -968,10 +966,16 @@ function obBack(step){
 
 async function saveProfile(){
   if(!user)return;
-  const{error}=await sb.from('user_profiles').upsert({id:user.id,niches:obNiches,tools:obTools},{onConflict:'id'});
-  if(!error){
-    profile={id:user.id,niches:obNiches,tools:obTools};
+  const{data:existing}=await sb.from('user_profiles').select('id').eq('id',user.id).single();
+  let error;
+  if(existing){
+    const res=await sb.from('user_profiles').update({niches:obNiches,tools:obTools}).eq('id',user.id);
+    error=res.error;
+  }else{
+    const res=await sb.from('user_profiles').insert({id:user.id,niches:obNiches,tools:obTools});
+    error=res.error;
   }
+  if(!error) profile={id:user.id,niches:obNiches,tools:obTools};
 }
 
 async function finishOnboarding(){
@@ -995,9 +999,18 @@ async function savePrefs(){
   if(!user){toast('Sign in to save preferences','err');return;}
   const niches=[...document.querySelectorAll('#pref-niches .ptag.sel')].map(t=>t.dataset.val);
   const tools=[...document.querySelectorAll('#pref-tools .ptag.sel')].map(t=>t.dataset.val);
-  const{error}=await sb.from('user_profiles').upsert({id:user.id,niches,tools},{onConflict:'id'});
-  if(error){toast('Could not save','err');return;}
-  profile={...profile,niches,tools};
+  // Try update first, if no rows affected then insert
+  const{data:existing}=await sb.from('user_profiles').select('id').eq('id',user.id).single();
+  let error;
+  if(existing){
+    const res=await sb.from('user_profiles').update({niches,tools}).eq('id',user.id);
+    error=res.error;
+  }else{
+    const res=await sb.from('user_profiles').insert({id:user.id,niches,tools});
+    error=res.error;
+  }
+  if(error){toast('Could not save — try again','err');console.error(error);return;}
+  profile={id:user.id,niches,tools};
   renderPersonalised();
   toast('Preferences saved!','ok');
   showPage('home');
