@@ -25,61 +25,84 @@
   --br2:#cdd4c8;
   --r:14px;--rl:18px;
   --sh:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
-  --shm:0 4px 16px rgba(0,0,0,.09)
+  --shm:0 4px 20px rgba(0,0,0,.1)
 }
 body{background:var(--page);color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh}
 
 /* ── NAV ── */
-nav{background:var(--page);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--br)}
+nav{background:var(--page);padding:0 24px;height:62px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--br)}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
 .lbadge{background:var(--ink);color:var(--w);border-radius:10px;padding:6px 12px;font-size:13px;font-weight:700;letter-spacing:-.3px}
 .lname{font-size:17px;font-weight:700;letter-spacing:-.4px}
 .navr{display:flex;gap:8px;align-items:center}
+
+/* AVATAR */
+.avatar-btn{width:36px;height:36px;border-radius:100px;background:var(--g600);color:#fff;font-size:13px;font-weight:700;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative}
+.avatar-menu{position:absolute;top:44px;right:0;background:var(--w);border:1.5px solid var(--br);border-radius:var(--rl);padding:8px;min-width:180px;box-shadow:var(--shm);display:none;z-index:200}
+.avatar-menu.open{display:block}
+.am-item{display:block;width:100%;text-align:left;padding:9px 12px;border:none;background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer;border-radius:10px}
+.am-item:hover{background:var(--page);color:var(--ink)}
+.am-divider{height:1px;background:var(--br);margin:4px 0}
+
+/* BUTTONS */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;border-radius:100px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13.5px;font-weight:600;cursor:pointer;border:none;text-decoration:none;transition:all .15s;white-space:nowrap}
-.bt-ghost{background:var(--w);color:var(--ink2);border:1px solid var(--br2)}
-.bt-ghost:hover{background:var(--w);color:var(--ink);border-color:var(--ink2)}
+.bt-ghost{background:var(--w);color:var(--ink2);border:1.5px solid var(--br2)}
+.bt-ghost:hover{color:var(--ink);border-color:var(--ink2)}
 .bt-dark{background:var(--ink);color:var(--w)}
 .bt-dark:hover{background:#2a2e28}
 .bt-green{background:var(--g600);color:#fff}
 .bt-green:hover{background:var(--g800)}
 
 /* ── HERO ── */
-.hero{padding:48px 24px 40px;max-width:700px}
 .hero-wrap{max-width:1120px;margin:0 auto;padding:0 24px}
-.htag{display:inline-flex;align-items:center;gap:7px;background:var(--w);border:1px solid var(--br);border-radius:100px;padding:5px 14px 5px 10px;font-size:12.5px;font-weight:600;color:var(--ink2);margin-bottom:20px}
+.hero{padding:48px 0 36px}
+.htag{display:inline-flex;align-items:center;gap:7px;background:var(--w);border:1.5px solid var(--br);border-radius:100px;padding:5px 14px 5px 10px;font-size:12.5px;font-weight:600;color:var(--ink2);margin-bottom:20px}
 .live-dot{width:8px;height:8px;border-radius:50%;background:var(--g400);animation:ld 2s infinite}
 @keyframes ld{0%,100%{opacity:1}50%{opacity:.4}}
 .hero h1{font-size:clamp(2.4rem,5.5vw,3.8rem);font-weight:800;line-height:1.05;letter-spacing:-2px;color:var(--ink);margin-bottom:14px}
 .hero h1 span{color:var(--g600)}
 .hero-sub{font-size:16px;font-weight:400;color:var(--ink2);max-width:520px;line-height:1.65;margin-bottom:32px}
-
-/* SEARCH */
-.srow{display:flex;gap:10px;flex-wrap:wrap;max-width:560px}
-.sbox{position:relative;flex:1;min-width:240px}
+.sbox{position:relative;max-width:480px}
 .sbox svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--ink3);pointer-events:none}
 #search{width:100%;padding:13px 14px 13px 42px;background:var(--w);border:1.5px solid var(--br2);border-radius:100px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:500;color:var(--ink);outline:none;transition:all .2s;box-shadow:var(--sh)}
 #search:focus{border-color:var(--g400);box-shadow:0 0 0 3px rgba(90,158,80,.1)}
 #search::placeholder{color:var(--ink3);font-weight:400}
 
-/* ── STATS STRIP ── */
+/* ── STATS ── */
 .stats-strip{display:flex;gap:10px;padding:0 24px 32px;max-width:1120px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
 .stats-strip::-webkit-scrollbar{display:none}
-.scard{background:var(--w);border:1px solid var(--br);border-radius:var(--rl);padding:16px 20px;white-space:nowrap;box-shadow:var(--sh);min-width:120px}
+.scard{background:var(--w);border:1.5px solid var(--br);border-radius:var(--rl);padding:16px 20px;white-space:nowrap;box-shadow:var(--sh);min-width:120px}
 .sc-n{font-size:24px;font-weight:800;letter-spacing:-1px;color:var(--ink);line-height:1}
 .sc-l{font-size:12px;font-weight:500;color:var(--ink3);margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
 
-/* ── FILTER SECTION ── */
+/* ── FOR YOU SECTION ── */
+.fy-section{max-width:1120px;margin:0 auto;padding:0 24px 8px}
+.fy-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.fy-title{display:flex;align-items:center;gap:10px}
+.fy-title h2{font-size:20px;font-weight:800;letter-spacing:-.5px}
+.fy-badge{background:var(--g50);border:1.5px solid var(--g100);border-radius:100px;padding:3px 12px;font-size:11.5px;font-weight:700;color:var(--g600)}
+.fy-edit{font-size:13px;font-weight:600;color:var(--ink3);cursor:pointer;background:none;border:none;font-family:'Plus Jakarta Sans',sans-serif}
+.fy-edit:hover{color:var(--g600)}
+.fy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:32px}
+
+/* ── SIGN UP PROMPT (for guests) ── */
+.signup-prompt{background:var(--w);border:1.5px solid var(--g100);border-radius:var(--rl);padding:24px 28px;max-width:1120px;margin:0 auto 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;box-shadow:var(--sh)}
+.sp-left h3{font-size:16px;font-weight:800;letter-spacing:-.3px;margin-bottom:4px}
+.sp-left p{font-size:13.5px;color:var(--ink2);font-weight:400}
+.sp-left span{color:var(--g600);font-weight:700}
+
+/* ── FILTERS ── */
 .fsec{padding:0 24px;max-width:1120px;margin:0 auto}
-.f-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--ink3);margin-bottom:10px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-bottom:14px}
+.sec-head h2{font-size:20px;font-weight:800;letter-spacing:-.5px}
+.sec-head span{font-size:13px;color:var(--ink3);font-weight:500}
 .pills{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
 .pills::-webkit-scrollbar{display:none}
-.pill{padding:9px 20px;border-radius:100px;background:var(--w);border:1.5px solid var(--br);color:var(--ink2);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .15s;box-shadow:var(--sh)}
+.pill{padding:8px 18px;border-radius:100px;background:var(--w);border:1.5px solid var(--br);color:var(--ink2);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .15s;box-shadow:var(--sh)}
 .pill:hover{border-color:var(--g200);background:var(--g50);color:var(--ink)}
 .pill.on{background:var(--ink);border-color:var(--ink);color:#fff;box-shadow:none}
-
-/* CONTROLS */
-.ctls{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 0 20px;flex-wrap:wrap}
-.togrow{display:flex;align-items:center;gap:0;cursor:pointer;user-select:none;background:var(--w);border:1.5px solid var(--br);border-radius:100px;padding:8px 16px 8px 10px;box-shadow:var(--sh);gap:10px}
+.ctls{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0 20px;flex-wrap:wrap}
+.togrow{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;background:var(--w);border:1.5px solid var(--br);border-radius:100px;padding:8px 16px 8px 12px;box-shadow:var(--sh)}
 .tog{width:36px;height:20px;border-radius:100px;background:var(--br2);position:relative;transition:background .2s;flex-shrink:0}
 .tog.on{background:var(--g400)}
 .tog::after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
@@ -90,12 +113,14 @@ nav{background:var(--page);padding:16px 24px;display:flex;align-items:center;jus
 
 /* ── GRID ── */
 .gwrap{padding:0 24px 64px;max-width:1120px;margin:0 auto}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
 
 /* ── CARD ── */
-.card{background:var(--w);border:1.5px solid var(--br);border-radius:var(--rl);padding:22px;display:flex;flex-direction:column;gap:11px;transition:transform .15s,box-shadow .15s,border-color .15s;box-shadow:var(--sh);cursor:default}
+.card{background:var(--w);border:1.5px solid var(--br);border-radius:var(--rl);padding:22px;display:flex;flex-direction:column;gap:11px;transition:transform .15s,box-shadow .15s,border-color .15s;box-shadow:var(--sh)}
 .card:hover{transform:translateY(-2px);box-shadow:var(--shm);border-color:var(--br2)}
 .card.exp{opacity:.4;pointer-events:none}
+.card.verified{border-color:var(--g100)}
+.card.foryou-card{border-color:var(--g200);background:linear-gradient(135deg,var(--w) 0%,var(--g50) 100%)}
 .ctop{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
 .cbadge{padding:4px 12px;border-radius:100px;font-size:11.5px;font-weight:700;letter-spacing:.2px;text-transform:capitalize}
 .cb-credits{background:#eff6ff;color:#1d4ed8}
@@ -110,7 +135,7 @@ nav{background:var(--page);padding:16px 24px;display:flex;align-items:center;jus
 .da{background:var(--g400)}.la{color:var(--g600)}
 .de{background:#f59e0b}.le{color:#b45309}
 .dx{background:var(--ink3)}.lx{color:var(--ink3)}
-.ctitle{font-size:16px;font-weight:700;color:var(--ink);line-height:1.3;letter-spacing:-.3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ctitle{font-size:15.5px;font-weight:700;color:var(--ink);line-height:1.3;letter-spacing:-.3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .cdesc{font-size:13.5px;color:var(--ink2);line-height:1.55;flex:1;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-weight:400}
 .cmeta{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
 .csrc{font-size:12px;color:var(--ink3);display:flex;align-items:center;gap:5px;font-weight:500}
@@ -125,36 +150,24 @@ nav{background:var(--page);padding:16px 24px;display:flex;align-items:center;jus
 .bshr{width:38px;height:38px;border-radius:100px;background:var(--page);border:1.5px solid var(--br2);color:var(--ink3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
 .bshr:hover{background:var(--w);color:var(--ink);border-color:var(--ink2)}
 
-/* VERIFIED GLOW */
-.card.verified{border-color:var(--g100)}
-
 /* ── SKELETON ── */
 .sk-card{background:var(--w);border:1.5px solid var(--br);border-radius:var(--rl);padding:22px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--sh)}
 .sk{background:var(--page);border-radius:8px;animation:skp 1.6s ease-in-out infinite}
 @keyframes skp{0%,100%{opacity:.7}50%{opacity:1}}
-
-/* ── EMPTY ── */
-.empty{grid-column:1/-1;text-align:center;padding:80px 24px;color:var(--ink3)}
+.empty{grid-column:1/-1;text-align:center;padding:60px 24px;color:var(--ink3)}
 .empty h3{font-size:18px;font-weight:700;color:var(--ink2);margin-bottom:8px}
 .empty p{font-size:14px}
-
-/* ── SECTION HEADING ── */
-.sec-head{max-width:1120px;margin:0 auto;padding:32px 24px 16px;display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.sec-head h2{font-size:22px;font-weight:800;letter-spacing:-.6px}
-.sec-head span{font-size:13px;color:var(--ink3);font-weight:500}
 
 /* ── ABOUT ── */
 .about-wrap{max-width:1120px;margin:0 auto;padding:0 24px 64px}
 .about-card{background:var(--w);border:1.5px solid var(--br);border-radius:var(--rl);padding:40px;box-shadow:var(--sh);display:flex;gap:40px;align-items:center;flex-wrap:wrap}
 .about-txt{flex:1;min-width:260px}
 .about-txt h2{font-size:26px;font-weight:800;letter-spacing:-.8px;margin-bottom:12px}
-.about-txt p{font-size:14.5px;color:var(--ink2);line-height:1.75;margin-bottom:20px}
-.about-aside{flex-shrink:0}
-.radar-badge{background:var(--page);border:1.5px solid var(--br);border-radius:var(--rl);padding:20px 24px;text-align:center;min-width:160px}
-.radar-badge .big{font-size:36px;font-weight:800;letter-spacing:-1.5px;color:var(--ink);line-height:1}
+.about-txt p{font-size:14.5px;color:var(--ink2);line-height:1.75;margin-bottom:16px}
+.radar-badge{background:var(--page);border:1.5px solid var(--br);border-radius:var(--rl);padding:20px 24px;text-align:center;min-width:140px}
+.radar-badge .big{font-size:36px;font-weight:800;letter-spacing:-1.5px;line-height:1}
 .radar-badge .sm{font-size:12px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.6px;margin-top:4px}
 
-/* ── FOOTER ── */
 footer{border-top:1px solid var(--br);padding:24px;text-align:center;font-size:13px;color:var(--ink3);font-weight:500}
 footer a{color:var(--ink2);text-decoration:none}
 footer a:hover{color:var(--g600)}
@@ -162,11 +175,15 @@ footer a:hover{color:var(--g600)}
 /* ── PAGES ── */
 .page{display:none}.page.active{display:block}
 
-/* ── SUBMIT ── */
-.sub-wrap{max-width:560px;margin:0 auto;padding:40px 24px 64px}
-.sub-wrap h1{font-size:32px;font-weight:800;letter-spacing:-1px;margin-bottom:8px}
-.sub-wrap>p{font-size:15px;color:var(--ink2);margin-bottom:32px;line-height:1.65}
-.fcard{background:var(--w);border:1.5px solid var(--br);border-radius:var(--rl);padding:28px;box-shadow:var(--sh)}
+/* ── AUTH PAGES ── */
+.auth-wrap{max-width:420px;margin:0 auto;padding:56px 24px}
+.auth-wrap h1{font-size:30px;font-weight:800;letter-spacing:-1px;margin-bottom:8px}
+.auth-wrap>p{font-size:15px;color:var(--ink2);margin-bottom:32px;line-height:1.6}
+.auth-card{background:var(--w);border:1.5px solid var(--br);border-radius:var(--rl);padding:28px;box-shadow:var(--sh)}
+.auth-switch{text-align:center;margin-top:20px;font-size:13.5px;color:var(--ink3)}
+.auth-switch a{color:var(--g600);font-weight:700;cursor:pointer;text-decoration:none}
+
+/* ── FORM ── */
 .fg{margin-bottom:18px}
 .fg label{display:block;font-size:12px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px}
 .req{color:var(--g600)}
@@ -174,6 +191,30 @@ footer a:hover{color:var(--g600)}
 .fi:focus{border-color:var(--g400);background:var(--w);box-shadow:0 0 0 3px rgba(90,158,80,.08)}
 .fi::placeholder{color:var(--ink3);font-weight:400}
 textarea.fi{resize:vertical;min-height:88px}
+
+/* ── ONBOARDING ── */
+.ob-wrap{max-width:560px;margin:0 auto;padding:48px 24px 64px}
+.ob-progress{display:flex;gap:8px;margin-bottom:40px}
+.ob-step{flex:1;height:4px;border-radius:100px;background:var(--br2);transition:background .3s}
+.ob-step.done{background:var(--g600)}
+.ob-step.active{background:var(--g400)}
+.ob-head{margin-bottom:32px}
+.ob-head h1{font-size:28px;font-weight:800;letter-spacing:-.8px;margin-bottom:8px}
+.ob-head p{font-size:15px;color:var(--ink2);line-height:1.65}
+.ob-choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:32px}
+.choice{background:var(--w);border:1.5px solid var(--br);border-radius:var(--rl);padding:18px 16px;cursor:pointer;transition:all .15s;box-shadow:var(--sh);text-align:left}
+.choice:hover{border-color:var(--g200);background:var(--g50)}
+.choice.sel{border-color:var(--g600);background:var(--g50);box-shadow:0 0 0 3px rgba(58,116,50,.1)}
+.choice-icon{font-size:24px;margin-bottom:8px;display:block}
+.choice-title{font-size:14px;font-weight:700;color:var(--ink);letter-spacing:-.2px}
+.choice-desc{font-size:12px;color:var(--ink3);margin-top:3px;line-height:1.4}
+.ob-nav{display:flex;justify-content:space-between;align-items:center;gap:12px}
+
+/* ── SUBMIT ── */
+.sub-wrap{max-width:560px;margin:0 auto;padding:40px 24px 64px}
+.sub-wrap h1{font-size:30px;font-weight:800;letter-spacing:-.8px;margin-bottom:8px}
+.sub-wrap>p{font-size:15px;color:var(--ink2);margin-bottom:28px;line-height:1.65}
+.fcard{background:var(--w);border:1.5px solid var(--br);border-radius:var(--rl);padding:28px;box-shadow:var(--sh)}
 .ok-box{text-align:center;padding:56px 24px;display:none}
 .ok-icon{width:56px;height:56px;background:var(--g50);border:1.5px solid var(--g100);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:22px}
 .ok-box h3{font-size:22px;font-weight:800;letter-spacing:-.5px;margin-bottom:8px}
@@ -184,7 +225,7 @@ textarea.fi{resize:vertical;min-height:88px}
 .ov.open{display:flex}
 .modal{background:var(--w);border:1.5px solid var(--br);border-radius:var(--rl);padding:32px;max-width:400px;width:100%;position:relative;box-shadow:var(--shm)}
 .mx{position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:100px;background:var(--page);border:1.5px solid var(--br);color:var(--ink3);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;font-weight:700}
-.mx:hover{color:var(--ink);border-color:var(--br2)}
+.mx:hover{color:var(--ink)}
 .modal h2{font-size:22px;font-weight:800;letter-spacing:-.6px;margin-bottom:6px}
 .modal>p{font-size:14px;color:var(--ink2);margin-bottom:24px;line-height:1.6}
 
@@ -192,16 +233,28 @@ textarea.fi{resize:vertical;min-height:88px}
 .toast{position:fixed;bottom:24px;right:24px;background:var(--ink);color:#fff;border-radius:100px;padding:12px 20px;font-size:13.5px;font-weight:600;z-index:9999;opacity:0;transform:translateY(10px);transition:all .25s;pointer-events:none;letter-spacing:-.1px}
 .toast.show{opacity:1;transform:translateY(0)}
 .toast.ok{background:var(--g600)}
+.toast.err{background:#dc2626}
 
-/* ── RESPONSIVE ── */
+/* ── PROFILE PAGE ── */
+.profile-wrap{max-width:560px;margin:0 auto;padding:40px 24px 64px}
+.profile-wrap h1{font-size:28px;font-weight:800;letter-spacing:-.8px;margin-bottom:28px}
+.pcard{background:var(--w);border:1.5px solid var(--br);border-radius:var(--rl);padding:24px;box-shadow:var(--sh);margin-bottom:14px}
+.pcard h3{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--ink3);margin-bottom:16px}
+.ptag-grid{display:flex;flex-wrap:wrap;gap:8px}
+.ptag{padding:7px 16px;border-radius:100px;background:var(--page);border:1.5px solid var(--br);font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer;transition:all .15s}
+.ptag:hover{border-color:var(--g200)}
+.ptag.sel{background:var(--g50);border-color:var(--g600);color:var(--g600)}
+
 @media(max-width:640px){
   nav,footer{padding-left:16px;padding-right:16px}
-  .hero-wrap,.fsec,.gwrap,.stats-strip,.sec-head,.about-wrap{padding-left:16px;padding-right:16px}
-  .hero{padding:36px 0 28px}
-  .grid{grid-template-columns:1fr}
+  .hero-wrap,.fsec,.gwrap,.stats-strip,.about-wrap,.fy-section{padding-left:16px;padding-right:16px}
+  .hero{padding:32px 0 24px}
+  .grid,.fy-grid{grid-template-columns:1fr}
+  .ob-choices{grid-template-columns:1fr}
   .about-card{padding:24px;gap:24px}
   .tg2{grid-template-columns:1fr!important}
-  .sub-wrap{padding:32px 16px}
+  .sub-wrap,.auth-wrap,.ob-wrap,.profile-wrap{padding-left:16px;padding-right:16px}
+  .signup-prompt{padding:18px}
 }
 </style>
 </head>
@@ -213,25 +266,21 @@ textarea.fi{resize:vertical;min-height:88px}
     <span class="lbadge">AG</span>
     <span class="lname">AIGems</span>
   </a>
-  <div class="navr">
-    <button class="btn bt-ghost" onclick="showPage('submit')">Submit a Gem</button>
-    <button class="btn bt-dark" onclick="openOv('sub')">Subscribe</button>
+  <div class="navr" id="navr">
+    <!-- filled by JS -->
   </div>
 </nav>
 
-<!-- ══ HOME ══ -->
+<!-- ══════════ HOME ══════════ -->
 <div id="page-home" class="page active">
-
   <div class="hero-wrap">
     <div class="hero">
       <div class="htag"><span class="live-dot"></span>Live radar — scanning every 4 hours</div>
       <h1>Never miss a<br><span>free AI</span><br>opportunity.</h1>
       <p class="hero-sub">We scan company blogs, newsletters and developer communities so you always find free credits, beta access, courses and deals — before they expire.</p>
-      <div class="srow">
-        <div class="sbox">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input type="text" id="search" placeholder="Search — try 'credits', 'free course'..." oninput="go()">
-        </div>
+      <div class="sbox">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="search" placeholder="Search — try 'credits', 'ElevenLabs'..." oninput="go()">
       </div>
     </div>
   </div>
@@ -244,14 +293,40 @@ textarea.fi{resize:vertical;min-height:88px}
     <div class="scard"><div class="sc-n">4hr</div><div class="sc-l">Refresh Rate</div></div>
   </div>
 
-  <!-- SECTION HEAD -->
-  <div class="sec-head">
-    <h2>All Opportunities</h2>
-    <span id="showing-count"></span>
+  <!-- FOR YOU (logged in) / SIGN UP PROMPT (guest) -->
+  <div id="fy-section" style="display:none">
+    <div class="fy-section">
+      <div class="fy-head">
+        <div class="fy-title">
+          <h2>For You</h2>
+          <span class="fy-badge" id="fy-badge">Personalised</span>
+        </div>
+        <button class="fy-edit" onclick="showPage('profile')">Edit preferences →</button>
+      </div>
+      <div class="fy-grid" id="fy-grid">
+        <!-- filled by JS -->
+      </div>
+    </div>
+  </div>
+
+  <div id="signup-prompt" style="display:none">
+    <div style="max-width:1120px;margin:0 auto;padding:0 24px 8px">
+      <div class="signup-prompt">
+        <div class="sp-left">
+          <h3>✦ Get your personalised gem feed</h3>
+          <p>Sign up and tell us your niche — we'll show <span>your most relevant opportunities first</span></p>
+        </div>
+        <button class="btn bt-green" onclick="showPage('signup')">Personalise my feed →</button>
+      </div>
+    </div>
   </div>
 
   <!-- FILTERS -->
   <div class="fsec">
+    <div class="sec-head">
+      <h2>All Opportunities</h2>
+      <span id="showing-count"></span>
+    </div>
     <div class="pills">
       <button class="pill on" data-c="all" onclick="setC(this)">All</button>
       <button class="pill" data-c="credits" onclick="setC(this)">💳 Credits</button>
@@ -277,7 +352,6 @@ textarea.fi{resize:vertical;min-height:88px}
     </div>
   </div>
 
-  <!-- GRID -->
   <div class="gwrap">
     <div class="grid" id="grid">
       <div class="sk-card"><div class="sk" style="height:20px;width:50%"></div><div class="sk" style="height:16px;width:35%"></div><div class="sk" style="height:60px"></div><div class="sk" style="height:38px"></div></div>
@@ -286,16 +360,18 @@ textarea.fi{resize:vertical;min-height:88px}
     </div>
   </div>
 
-  <!-- ABOUT -->
   <div class="about-wrap">
     <div class="about-card">
       <div class="about-txt">
         <h2>What is AIGems?</h2>
         <p>AIGems is a free radar for the AI community. Our automated system scans company blogs, Hacker News, newsletters and developer communities every 4 hours — surfacing free credits, beta invites, scholarships, courses and deals so you never miss out.</p>
-        <p>Found something we missed? Submit it and help the whole community.</p>
-        <button class="btn bt-dark" onclick="showPage('submit')">Submit a Gem →</button>
+        <p>Sign up for a personalised feed — tell us your niche and we'll show you what matters most to you.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn bt-dark" onclick="showPage('submit')">Submit a Gem →</button>
+          <button class="btn bt-ghost" id="hero-cta" onclick="showPage('signup')">Get personalised feed</button>
+        </div>
       </div>
-      <div class="about-aside">
+      <div>
         <div class="radar-badge">
           <div class="big">4hr</div>
           <div class="sm">Scan cycle</div>
@@ -306,19 +382,199 @@ textarea.fi{resize:vertical;min-height:88px}
 
   <footer>
     Built for the AI community &nbsp;·&nbsp;
-    <a href="#" onclick="showPage('submit')">Submit a Gem</a>
+    <a href="#" onclick="showPage('submit')">Submit a Gem</a> &nbsp;·&nbsp;
+    <a href="#" onclick="openOv('sub')">Subscribe</a>
   </footer>
 </div>
 
-<!-- ══ SUBMIT ══ -->
+<!-- ══════════ SIGN UP ══════════ -->
+<div id="page-signup" class="page">
+  <div class="auth-wrap">
+    <button class="btn bt-ghost" onclick="showPage('home')" style="margin-bottom:28px">← Back</button>
+    <h1>Create your account</h1>
+    <p>Join AIGems and get a personalised feed of free AI opportunities.</p>
+    <div class="auth-card">
+      <div class="fg"><label>Email <span class="req">*</span></label><input class="fi" type="email" id="au-email" placeholder="you@email.com"></div>
+      <div class="fg"><label>Password <span class="req">*</span></label><input class="fi" type="password" id="au-pass" placeholder="Min. 6 characters"></div>
+      <button class="btn bt-dark" onclick="doSignup()" style="width:100%;justify-content:center;padding:13px;border-radius:100px;font-size:14.5px">Create Account</button>
+    </div>
+    <p class="auth-switch">Already have an account? <a onclick="showPage('login')">Sign in</a></p>
+  </div>
+</div>
+
+<!-- ══════════ LOGIN ══════════ -->
+<div id="page-login" class="page">
+  <div class="auth-wrap">
+    <button class="btn bt-ghost" onclick="showPage('home')" style="margin-bottom:28px">← Back</button>
+    <h1>Welcome back</h1>
+    <p>Sign in to see your personalised gem feed.</p>
+    <div class="auth-card">
+      <div class="fg"><label>Email</label><input class="fi" type="email" id="li-email" placeholder="you@email.com"></div>
+      <div class="fg"><label>Password</label><input class="fi" type="password" id="li-pass" placeholder="Your password"></div>
+      <button class="btn bt-dark" onclick="doLogin()" style="width:100%;justify-content:center;padding:13px;border-radius:100px;font-size:14.5px">Sign In</button>
+    </div>
+    <p class="auth-switch">No account yet? <a onclick="showPage('signup')">Create one free</a></p>
+  </div>
+</div>
+
+<!-- ══════════ ONBOARDING ══════════ -->
+<div id="page-onboarding" class="page">
+  <div class="ob-wrap">
+    <div class="ob-progress">
+      <div class="ob-step active" id="obs-1"></div>
+      <div class="ob-step" id="obs-2"></div>
+      <div class="ob-step" id="obs-3"></div>
+    </div>
+
+    <!-- Step 1: Role -->
+    <div id="ob-1">
+      <div class="ob-head">
+        <h1>What best describes you?</h1>
+        <p>Pick one or more — we'll use this to surface your most relevant gems.</p>
+      </div>
+      <div class="ob-choices">
+        <div class="choice" data-val="developer" onclick="toggleChoice(this,'niches')">
+          <span class="choice-icon">⚡</span>
+          <div class="choice-title">Developer / Builder</div>
+          <div class="choice-desc">APIs, coding tools, hosting credits</div>
+        </div>
+        <div class="choice" data-val="creator" onclick="toggleChoice(this,'niches')">
+          <span class="choice-icon">🎙️</span>
+          <div class="choice-title">Content Creator</div>
+          <div class="choice-desc">Voice, video, podcasting, writing</div>
+        </div>
+        <div class="choice" data-val="designer" onclick="toggleChoice(this,'niches')">
+          <span class="choice-icon">🎨</span>
+          <div class="choice-title">Designer</div>
+          <div class="choice-desc">UI, graphics, image generation</div>
+        </div>
+        <div class="choice" data-val="researcher" onclick="toggleChoice(this,'niches')">
+          <span class="choice-icon">🔬</span>
+          <div class="choice-title">Researcher / Student</div>
+          <div class="choice-desc">Datasets, compute, courses</div>
+        </div>
+        <div class="choice" data-val="entrepreneur" onclick="toggleChoice(this,'niches')">
+          <span class="choice-icon">🚀</span>
+          <div class="choice-title">Entrepreneur</div>
+          <div class="choice-desc">Startup tools, business credits</div>
+        </div>
+        <div class="choice" data-val="general" onclick="toggleChoice(this,'niches')">
+          <span class="choice-icon">✦</span>
+          <div class="choice-title">AI Enthusiast</div>
+          <div class="choice-desc">General AI tools and opportunities</div>
+        </div>
+      </div>
+      <div class="ob-nav">
+        <div></div>
+        <button class="btn bt-dark" onclick="obNext(2)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Tools -->
+    <div id="ob-2" style="display:none">
+      <div class="ob-head">
+        <h1>Which AI areas interest you?</h1>
+        <p>Select all that apply — pick as many as you like.</p>
+      </div>
+      <div class="ob-choices">
+        <div class="choice" data-val="coding" onclick="toggleChoice(this,'tools')">
+          <span class="choice-icon">💻</span>
+          <div class="choice-title">AI Coding</div>
+          <div class="choice-desc">Cursor, Copilot, Replit, Codegen</div>
+        </div>
+        <div class="choice" data-val="voice" onclick="toggleChoice(this,'tools')">
+          <span class="choice-icon">🎵</span>
+          <div class="choice-title">Voice & Audio</div>
+          <div class="choice-desc">ElevenLabs, Descript, TTS tools</div>
+        </div>
+        <div class="choice" data-val="image" onclick="toggleChoice(this,'tools')">
+          <span class="choice-icon">🖼️</span>
+          <div class="choice-title">Image & Video</div>
+          <div class="choice-desc">Midjourney, Runway, Stable Diffusion</div>
+        </div>
+        <div class="choice" data-val="writing" onclick="toggleChoice(this,'tools')">
+          <span class="choice-icon">✍️</span>
+          <div class="choice-title">Writing & LLMs</div>
+          <div class="choice-desc">Claude, ChatGPT, Jasper, Writesonic</div>
+        </div>
+        <div class="choice" data-val="data" onclick="toggleChoice(this,'tools')">
+          <span class="choice-icon">📊</span>
+          <div class="choice-title">Data & ML</div>
+          <div class="choice-desc">Kaggle, HuggingFace, Colab, datasets</div>
+        </div>
+        <div class="choice" data-val="cloud" onclick="toggleChoice(this,'tools')">
+          <span class="choice-icon">☁️</span>
+          <div class="choice-title">Cloud & Infra</div>
+          <div class="choice-desc">AWS, Azure, GCP, hosting credits</div>
+        </div>
+        <div class="choice" data-val="automation" onclick="toggleChoice(this,'tools')">
+          <span class="choice-icon">⚙️</span>
+          <div class="choice-title">Automation & Agents</div>
+          <div class="choice-desc">n8n, Make, Zapier AI, agents</div>
+        </div>
+        <div class="choice" data-val="education" onclick="toggleChoice(this,'tools')">
+          <span class="choice-icon">📚</span>
+          <div class="choice-title">Learning & Courses</div>
+          <div class="choice-desc">Free AI certifications, workshops</div>
+        </div>
+      </div>
+      <div class="ob-nav">
+        <button class="btn bt-ghost" onclick="obBack(1)">← Back</button>
+        <button class="btn bt-dark" onclick="obNext(3)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Done -->
+    <div id="ob-3" style="display:none;text-align:center;padding:32px 0">
+      <div style="font-size:56px;margin-bottom:20px">🪩</div>
+      <h1 style="font-size:28px;font-weight:800;letter-spacing:-.8px;margin-bottom:12px">Your feed is ready!</h1>
+      <p style="font-size:15px;color:var(--ink2);line-height:1.65;margin-bottom:32px;max-width:380px;margin-left:auto;margin-right:auto">We've personalised AIGems for you. Your most relevant opportunities now appear at the top of the page.</p>
+      <button class="btn bt-dark" onclick="finishOnboarding()" style="padding:13px 32px;font-size:15px">See my gems →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PROFILE ══════════ -->
+<div id="page-profile" class="page">
+  <div class="profile-wrap">
+    <button class="btn bt-ghost" onclick="showPage('home')" style="margin-bottom:28px">← Back</button>
+    <h1>Your Preferences</h1>
+    <div class="pcard">
+      <h3>I am a...</h3>
+      <div class="ptag-grid" id="pref-niches">
+        <div class="ptag" data-val="developer" onclick="togglePref(this,'niches')">⚡ Developer / Builder</div>
+        <div class="ptag" data-val="creator" onclick="togglePref(this,'niches')">🎙️ Content Creator</div>
+        <div class="ptag" data-val="designer" onclick="togglePref(this,'niches')">🎨 Designer</div>
+        <div class="ptag" data-val="researcher" onclick="togglePref(this,'niches')">🔬 Researcher / Student</div>
+        <div class="ptag" data-val="entrepreneur" onclick="togglePref(this,'niches')">🚀 Entrepreneur</div>
+        <div class="ptag" data-val="general" onclick="togglePref(this,'niches')">✦ AI Enthusiast</div>
+      </div>
+    </div>
+    <div class="pcard">
+      <h3>I'm interested in...</h3>
+      <div class="ptag-grid" id="pref-tools">
+        <div class="ptag" data-val="coding" onclick="togglePref(this,'tools')">💻 AI Coding</div>
+        <div class="ptag" data-val="voice" onclick="togglePref(this,'tools')">🎵 Voice & Audio</div>
+        <div class="ptag" data-val="image" onclick="togglePref(this,'tools')">🖼️ Image & Video</div>
+        <div class="ptag" data-val="writing" onclick="togglePref(this,'tools')">✍️ Writing & LLMs</div>
+        <div class="ptag" data-val="data" onclick="togglePref(this,'tools')">📊 Data & ML</div>
+        <div class="ptag" data-val="cloud" onclick="togglePref(this,'tools')">☁️ Cloud & Infra</div>
+        <div class="ptag" data-val="automation" onclick="togglePref(this,'tools')">⚙️ Automation</div>
+        <div class="ptag" data-val="education" onclick="togglePref(this,'tools')">📚 Learning</div>
+      </div>
+    </div>
+    <button class="btn bt-dark" onclick="savePrefs()" style="width:100%;justify-content:center;padding:12px;border-radius:100px">Save Preferences</button>
+  </div>
+</div>
+
+<!-- ══════════ SUBMIT ══════════ -->
 <div id="page-submit" class="page">
   <div class="sub-wrap">
     <button class="btn bt-ghost" onclick="showPage('home')" style="margin-bottom:28px">← Back</button>
     <h1>Submit a Gem</h1>
-    <p>Found a free AI opportunity? Share it — help fellow enthusiasts never miss a freebie.</p>
-
+    <p>Found a free AI opportunity? Share it and help fellow enthusiasts never miss a freebie.</p>
     <div class="fcard" id="fw">
-      <div class="fg"><label>Title <span class="req">*</span></label><input class="fi" type="text" id="st" placeholder="e.g. Replit AIDVANTAGE — 3 months free"></div>
+      <div class="fg"><label>Title <span class="req">*</span></label><input class="fi" type="text" id="st" placeholder="e.g. ElevenLabs free tier — 10k chars/month"></div>
       <div class="fg"><label>Description</label><textarea class="fi" id="sd" placeholder="Describe what the free opportunity offers..."></textarea></div>
       <div class="fg"><label>Category <span class="req">*</span></label>
         <select class="fi" id="sc">
@@ -333,14 +589,13 @@ textarea.fi{resize:vertical;min-height:88px}
         </select>
       </div>
       <div class="fg"><label>Source URL <span class="req">*</span></label><input class="fi" type="url" id="su" placeholder="https://..."></div>
-      <div class="fg"><label>Source Name <span class="req">*</span></label><input class="fi" type="text" id="ss" placeholder="e.g. OpenAI Blog, GitHub Education"></div>
+      <div class="fg"><label>Source Name <span class="req">*</span></label><input class="fi" type="text" id="ss" placeholder="e.g. ElevenLabs Blog"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px" class="tg2">
         <div class="fg"><label>Expiry <span style="color:var(--ink3);font-weight:500;text-transform:none;font-size:11px">(optional)</span></label><input class="fi" type="date" id="se"></div>
         <div class="fg"><label>Your Name <span style="color:var(--ink3);font-weight:500;text-transform:none;font-size:11px">(optional)</span></label><input class="fi" type="text" id="sn" placeholder="Anonymous"></div>
       </div>
-      <button class="btn bt-dark" onclick="doSub()" style="width:100%;justify-content:center;padding:13px;font-size:14.5px;border-radius:100px">Submit Gem</button>
+      <button class="btn bt-dark" onclick="doSubmitGem()" style="width:100%;justify-content:center;padding:13px;font-size:14.5px;border-radius:100px">Submit Gem</button>
     </div>
-
     <div class="ok-box" id="sok">
       <div class="ok-icon">✦</div>
       <h3>Gem submitted!</h3>
@@ -350,7 +605,7 @@ textarea.fi{resize:vertical;min-height:88px}
   </div>
 </div>
 
-<!-- MODAL -->
+<!-- SUBSCRIBE MODAL -->
 <div class="ov" id="ov-sub" onclick="ovOut(event,'sub')">
   <div class="modal">
     <button class="mx" onclick="closeOv('sub')">✕</button>
@@ -358,7 +613,7 @@ textarea.fi{resize:vertical;min-height:88px}
     <p>Free AI opportunities, delivered weekly. No spam — only the good stuff.</p>
     <div id="mf">
       <div class="fg"><label>Email address</label><input class="fi" type="email" id="me" placeholder="you@email.com"></div>
-      <button class="btn bt-dark" onclick="doSub2()" style="width:100%;justify-content:center;padding:12px;border-radius:100px">Subscribe — It's Free</button>
+      <button class="btn bt-dark" onclick="doSubscribe()" style="width:100%;justify-content:center;padding:12px;border-radius:100px">Subscribe — It's Free</button>
     </div>
     <div id="mok" style="display:none;text-align:center;padding:20px 0">
       <div class="ok-icon" style="margin-bottom:14px">✦</div>
@@ -370,33 +625,168 @@ textarea.fi{resize:vertical;min-height:88px}
 <div class="toast" id="toast"></div>
 
 <script>
+/* ─── SUPABASE ─── */
 const SB_URL='https://jnxknsuhxbbtawvjacml.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpueGtuc3VoeGJidGF3dmphY21sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzNDI1OTMsImV4cCI6MjA4ODkxODU5M30.hn5xAjaHgm2qr18rbYP52zyrEnSdYpKsAF1Oiz47eng';
 const sb=supabase.createClient(SB_URL,SB_KEY);
-let rows=[],ao=true,cat='all';
 
+/* ─── STATE ─── */
+let gems=[],ao=true,cat='all',user=null,profile=null;
+let obNiches=[],obTools=[];
+
+/* ─── NICHE → GEM SCORING MAP ─── */
+const NICHE_MAP={
+  developer:{cats:['credits','tool','beta'],kw:['github','replit','cursor','api','copilot','colab','heroku','vercel','netlify','cloudflare','render','railway','sdk','developer','open-source','blender']},
+  creator:{cats:['tool','credits'],kw:['elevenlabs','descript','voice','audio','podcast','video','content','creator','runway','heygen','synthesia','adobe','canva','capcut','veed','murf']},
+  designer:{cats:['tool','resource'],kw:['figma','canva','sketch','design','ui','ux','midjourney','stable diffusion','dall-e','adobe','framer','webflow','image']},
+  researcher:{cats:['course','scholarship','credits'],kw:['kaggle','dataset','research','paper','huggingface','colab','jupyter','notebook','compute','gpu','tpu','academic','university','mit','stanford']},
+  entrepreneur:{cats:['credits','coupon','beta'],kw:['startup','business','credits','aws','azure','google cloud','stripe','openai','anthropic','launch','early']},
+  general:{cats:['credits','tool','course','beta','coupon','scholarship','resource'],kw:['free','ai','openai','anthropic','claude','chatgpt','gpt','gemini','llm']}
+};
+const TOOL_MAP={
+  coding:{kw:['github','copilot','cursor','replit','codegen','codeium','tabnine','coding','developer','ide','jetbrains','vscode']},
+  voice:{kw:['elevenlabs','descript','murf','voice','audio','tts','text-to-speech','podcast','speechify','whisper','assembly']},
+  image:{kw:['midjourney','runway','stable diffusion','dall-e','firefly','image','video','comfyui','leonardo','kling','sora']},
+  writing:{kw:['claude','chatgpt','gpt','openai','anthropic','jasper','writesonic','copy','writing','llm','gemini','perplexity']},
+  data:{kw:['kaggle','huggingface','colab','jupyter','dataset','ml','pytorch','tensorflow','compute','gpu','bigquery','databricks']},
+  cloud:{kw:['aws','azure','google cloud','digitalocean','vercel','netlify','cloudflare','heroku','render','credits','hosting','oracle']},
+  automation:{kw:['n8n','make','zapier','automation','agent','workflow','no-code','low-code','airtable']},
+  education:{kw:['course','learn','certification','scholarship','deeplearning','fast.ai','edx','coursera','udemy','tutorial','training']}
+};
+
+/* ─── SCORE GEM FOR USER ─── */
+function scoreGem(gem){
+  if(!profile)return 0;
+  let score=0;
+  const txt=(gem.title+' '+(gem.description||'')+' '+(gem.tags||[]).join(' ')+' '+gem.source_name).toLowerCase();
+  const niches=profile.niches||[];
+  const tools=profile.tools||[];
+  niches.forEach(n=>{
+    const m=NICHE_MAP[n];
+    if(!m)return;
+    if(m.cats.includes(gem.category))score+=3;
+    m.kw.forEach(k=>{if(txt.includes(k))score+=2});
+  });
+  tools.forEach(t=>{
+    const m=TOOL_MAP[t];
+    if(!m)return;
+    m.kw.forEach(k=>{if(txt.includes(k))score+=3});
+  });
+  return score;
+}
+
+/* ─── INIT ─── */
 async function init(){
+  // Auth listener
+  sb.auth.onAuthStateChange(async(_,session)=>{
+    user=session?.user||null;
+    if(user){
+      const{data}=await sb.from('user_profiles').select('*').eq('id',user.id).single();
+      profile=data;
+    }else{
+      profile=null;
+    }
+    renderNav();
+    renderPersonalised();
+  });
+  // Load gems
   const{data}=await sb.from('opportunities').select('*').order('created_at',{ascending:false});
-  rows=data||[];
-  document.getElementById('tc').textContent=rows.length;
-  document.getElementById('ac').textContent=rows.filter(o=>o.status==='active').length;
+  gems=data||[];
+  document.getElementById('tc').textContent=gems.length;
+  document.getElementById('ac').textContent=gems.filter(o=>o.status==='active').length;
   go();
 }
 
-function setC(el){
-  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('on'));
-  el.classList.add('on'); cat=el.dataset.c; go();
+/* ─── NAV ─── */
+function renderNav(){
+  const navr=document.getElementById('navr');
+  const heroBtn=document.getElementById('hero-cta');
+  if(user){
+    const initials=(user.email||'U')[0].toUpperCase();
+    navr.innerHTML=`
+      <button class="btn bt-ghost" onclick="showPage('submit')">Submit a Gem</button>
+      <div style="position:relative">
+        <button class="avatar-btn" onclick="toggleAvatarMenu()" id="av-btn">${initials}</button>
+        <div class="avatar-menu" id="av-menu">
+          <div style="padding:10px 12px 8px;font-size:13px;font-weight:600;color:var(--ink3)">${user.email}</div>
+          <div class="am-divider"></div>
+          <button class="am-item" onclick="showPage('profile');closeAvatarMenu()">✦ My Preferences</button>
+          <button class="am-item" onclick="openOv('sub');closeAvatarMenu()">Subscribe</button>
+          <div class="am-divider"></div>
+          <button class="am-item" onclick="doLogout()" style="color:#dc2626">Sign Out</button>
+        </div>
+      </div>`;
+    if(heroBtn) heroBtn.style.display='none';
+  }else{
+    navr.innerHTML=`
+      <button class="btn bt-ghost" onclick="showPage('submit')">Submit a Gem</button>
+      <button class="btn bt-ghost" onclick="showPage('login')">Sign In</button>
+      <button class="btn bt-dark" onclick="showPage('signup')">Join Free</button>`;
+    if(heroBtn) heroBtn.style.display='';
+  }
 }
 
-function togAct(){
-  ao=!ao;
-  document.getElementById('tog').classList.toggle('on',ao); go();
+function toggleAvatarMenu(){
+  document.getElementById('av-menu').classList.toggle('open');
+}
+function closeAvatarMenu(){
+  const m=document.getElementById('av-menu');
+  if(m)m.classList.remove('open');
+}
+document.addEventListener('click',e=>{
+  if(!e.target.closest('#av-btn')&&!e.target.closest('#av-menu'))closeAvatarMenu();
+});
+
+/* ─── PERSONALISED SECTION ─── */
+function renderPersonalised(){
+  const fySection=document.getElementById('fy-section');
+  const spPrompt=document.getElementById('signup-prompt');
+  if(user&&profile&&(profile.niches?.length||profile.tools?.length)){
+    fySection.style.display='block';
+    spPrompt.style.display='none';
+    const scored=gems
+      .filter(g=>g.status==='active')
+      .map(g=>({...g,_score:scoreGem(g)}))
+      .filter(g=>g._score>0)
+      .sort((a,b)=>b._score-a._score)
+      .slice(0,6);
+    const fyGrid=document.getElementById('fy-grid');
+    if(scored.length){
+      fyGrid.innerHTML=scored.map(g=>mkCard(g,true)).join('');
+    }else{
+      fyGrid.innerHTML='<div style="grid-column:1/-1;padding:24px;color:var(--ink3);font-size:14px">No personalised matches yet — we\'re adding more gems daily.</div>';
+    }
+    const badge=document.getElementById('fy-badge');
+    const labels=[];
+    (profile.niches||[]).slice(0,2).forEach(n=>{
+      if(n==='developer')labels.push('Dev');
+      else if(n==='creator')labels.push('Creator');
+      else if(n==='designer')labels.push('Designer');
+      else if(n==='researcher')labels.push('Researcher');
+      else if(n==='entrepreneur')labels.push('Entrepreneur');
+      else if(n==='general')labels.push('AI Enthusiast');
+    });
+    if(labels.length)badge.textContent=labels.join(' · ');
+  }else if(user&&profile&&!profile.niches?.length){
+    fySection.style.display='none';
+    spPrompt.style.display='none';
+    // nudge to set prefs
+  }else if(!user){
+    fySection.style.display='none';
+    spPrompt.style.display='block';
+  }else{
+    fySection.style.display='none';
+    spPrompt.style.display='none';
+  }
 }
 
+/* ─── FILTERS ─── */
+function setC(el){document.querySelectorAll('.pill').forEach(p=>p.classList.remove('on'));el.classList.add('on');cat=el.dataset.c;go()}
+function togAct(){ao=!ao;document.getElementById('tog').classList.toggle('on',ao);go()}
 function go(){
   const q=document.getElementById('search').value.toLowerCase();
   const s=document.getElementById('srt').value;
-  let r=rows.filter(o=>{
+  let r=gems.filter(o=>{
     if(ao&&o.status==='expired')return false;
     if(cat!=='all'&&o.category!==cat)return false;
     if(q&&!o.title.toLowerCase().includes(q)&&!(o.description||'').toLowerCase().includes(q))return false;
@@ -410,36 +800,28 @@ function go(){
 
 function paint(r){
   const g=document.getElementById('grid');
-  if(!r.length){
-    g.innerHTML='<div class="empty"><h3>No gems found</h3><p>Try adjusting your search or filter.</p></div>';
-    return;
-  }
-  g.innerHTML=r.map(mk).join('');
+  if(!r.length){g.innerHTML='<div class="empty"><h3>No gems found</h3><p>Try adjusting your search or filter.</p></div>';return;}
+  g.innerHTML=r.map(g=>mkCard(g,false)).join('');
 }
 
-function mk(o){
+function mkCard(o,fy=false){
   const ex=o.status==='expired';
   const sm={
     active:`<div class="sdot"><span class="dot da"></span><span class="la">Active</span></div>`,
     expiring_soon:`<div class="sdot"><span class="dot de"></span><span class="le">Expiring Soon</span></div>`,
     expired:`<div class="sdot"><span class="dot dx"></span><span class="lx">Expired</span></div>`
   };
-  return`<div class="card${ex?' exp':''}${o.verified?' verified':''}">
+  return`<div class="card${ex?' exp':''}${o.verified?' verified':''}${fy?' foryou-card':''}">
     <div class="ctop"><span class="cbadge cb-${o.category}">${o.category}</span>${sm[o.status]||''}</div>
     <div class="ctitle">${e(o.title)}</div>
     <div class="cdesc">${e(o.description)}</div>
     <div class="cmeta">
-      <div class="csrc">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        ${e(o.source_name)}${o.verified?' <span style="color:var(--g400);font-size:10.5px;margin-left:3px;font-weight:700">✓</span>':''}
-      </div>
+      <div class="csrc"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>${e(o.source_name)}${o.verified?' <span style="color:var(--g400);font-size:10.5px;margin-left:3px;font-weight:700">✓</span>':''}</div>
       ${o.expiry_date?expB(o.expiry_date):''}
     </div>
     <div class="cfoot">
       <button class="bgrab"${ex?' disabled':''} onclick="grab('${o.id}','${ea(o.source_url)}')">${ex?'Expired':'Grab This Gem →'}</button>
-      <button class="bshr" onclick="shr('${ea(o.title)}','${ea(o.source_url)}')" title="Share">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-      </button>
+      <button class="bshr" onclick="shr('${ea(o.title)}','${ea(o.source_url)}')" title="Share"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>
     </div>
   </div>`;
 }
@@ -457,39 +839,129 @@ async function grab(id,url){
   const{data:r}=await sb.from('opportunities').select('clicks').eq('id',id).single();
   await sb.from('opportunities').update({clicks:(r?.clicks||0)+1}).eq('id',id);
 }
+function shr(title,url){navigator.clipboard.writeText(`${title} — Free AI gem on AIGems ${url}`).then(()=>toast('Copied to clipboard','ok'))}
 
-function shr(title,url){
-  navigator.clipboard.writeText(`${title} — Free AI gem on AIGems ${url}`)
-    .then(()=>toast('Copied to clipboard','ok'));
+/* ─── AUTH ─── */
+async function doSignup(){
+  const email=document.getElementById('au-email').value.trim();
+  const pass=document.getElementById('au-pass').value;
+  if(!email||!pass){toast('Please fill in both fields','err');return;}
+  if(pass.length<6){toast('Password must be at least 6 characters','err');return;}
+  const{error}=await sb.auth.signUp({email,password:pass});
+  if(error){toast(error.message,'err');return;}
+  showPage('onboarding');
+  resetOnboarding();
 }
 
-async function doSub2(){
-  const em=document.getElementById('me').value.trim();
-  if(!em||!em.includes('@')){toast('Enter a valid email');return;}
-  const{error}=await sb.from('subscribers').insert({email:em});
-  if(error?.code==='23505'){toast('Already subscribed!');return;}
-  if(error){toast('Something went wrong');return;}
-  document.getElementById('mf').style.display='none';
-  document.getElementById('mok').style.display='block';
+async function doLogin(){
+  const email=document.getElementById('li-email').value.trim();
+  const pass=document.getElementById('li-pass').value;
+  if(!email||!pass){toast('Please fill in both fields','err');return;}
+  const{error}=await sb.auth.signInWithPassword({email,password:pass});
+  if(error){toast('Invalid email or password','err');return;}
+  toast('Welcome back!','ok');
+  showPage('home');
 }
 
-async function doSub(){
+async function doLogout(){
+  await sb.auth.signOut();
+  user=null; profile=null;
+  renderNav(); renderPersonalised();
+  toast('Signed out');
+  showPage('home');
+}
+
+/* ─── ONBOARDING ─── */
+function resetOnboarding(){
+  obNiches=[];obTools=[];
+  document.querySelectorAll('.choice').forEach(c=>c.classList.remove('sel'));
+  [1,2,3].forEach(i=>{
+    document.getElementById('ob-'+i).style.display=i===1?'block':'none';
+    const s=document.getElementById('obs-'+i);
+    s.classList.remove('done','active');
+    if(i===1)s.classList.add('active');
+  });
+}
+
+function toggleChoice(el,type){
+  el.classList.toggle('sel');
+  const val=el.dataset.val;
+  const arr=type==='niches'?obNiches:obTools;
+  const idx=arr.indexOf(val);
+  if(idx>=0)arr.splice(idx,1);
+  else arr.push(val);
+}
+
+function obNext(step){
+  if(step===2&&obNiches.length===0){toast('Pick at least one option');return;}
+  document.getElementById('ob-'+(step-1)).style.display='none';
+  document.getElementById('ob-'+step).style.display='block';
+  document.getElementById('obs-'+(step-1)).classList.remove('active');
+  document.getElementById('obs-'+(step-1)).classList.add('done');
+  document.getElementById('obs-'+step).classList.add('active');
+  if(step===3){
+    // auto save
+    saveProfile();
+  }
+}
+
+function obBack(step){
+  document.getElementById('ob-'+(step+1)).style.display='none';
+  document.getElementById('ob-'+step).style.display='block';
+  document.getElementById('obs-'+(step+1)).classList.remove('active','done');
+  document.getElementById('obs-'+step).classList.remove('done');
+  document.getElementById('obs-'+step).classList.add('active');
+}
+
+async function saveProfile(){
+  if(!user)return;
+  const{error}=await sb.from('user_profiles').upsert({id:user.id,niches:obNiches,tools:obTools},{onConflict:'id'});
+  if(!error){
+    profile={id:user.id,niches:obNiches,tools:obTools};
+  }
+}
+
+async function finishOnboarding(){
+  await saveProfile();
+  renderPersonalised();
+  showPage('home');
+}
+
+/* ─── PROFILE PREFS ─── */
+function loadProfilePage(){
+  if(!profile)return;
+  document.querySelectorAll('#pref-niches .ptag').forEach(t=>{
+    t.classList.toggle('sel',(profile.niches||[]).includes(t.dataset.val));
+  });
+  document.querySelectorAll('#pref-tools .ptag').forEach(t=>{
+    t.classList.toggle('sel',(profile.tools||[]).includes(t.dataset.val));
+  });
+}
+function togglePref(el){el.classList.toggle('sel')}
+async function savePrefs(){
+  if(!user){toast('Sign in to save preferences','err');return;}
+  const niches=[...document.querySelectorAll('#pref-niches .ptag.sel')].map(t=>t.dataset.val);
+  const tools=[...document.querySelectorAll('#pref-tools .ptag.sel')].map(t=>t.dataset.val);
+  const{error}=await sb.from('user_profiles').upsert({id:user.id,niches,tools},{onConflict:'id'});
+  if(error){toast('Could not save','err');return;}
+  profile={...profile,niches,tools};
+  renderPersonalised();
+  toast('Preferences saved!','ok');
+  showPage('home');
+}
+
+/* ─── SUBMIT GEM ─── */
+async function doSubmitGem(){
   const t=document.getElementById('st').value.trim();
   const c=document.getElementById('sc').value;
   const u=document.getElementById('su').value.trim();
   const s=document.getElementById('ss').value.trim();
-  if(!t||!c||!u||!s){toast('Please fill in all required fields');return;}
-  const{error}=await sb.from('submissions').insert({
-    title:t,description:document.getElementById('sd').value.trim(),
-    category:c,source_url:u,source_name:s,
-    expiry_date:document.getElementById('se').value||null,
-    submitted_by:document.getElementById('sn').value.trim()||'Anonymous'
-  });
-  if(error){toast('Something went wrong');return;}
+  if(!t||!c||!u||!s){toast('Please fill in all required fields','err');return;}
+  const{error}=await sb.from('submissions').insert({title:t,description:document.getElementById('sd').value.trim(),category:c,source_url:u,source_name:s,expiry_date:document.getElementById('se').value||null,submitted_by:document.getElementById('sn').value.trim()||'Anonymous'});
+  if(error){toast('Something went wrong','err');return;}
   document.getElementById('fw').style.display='none';
   document.getElementById('sok').style.display='block';
 }
-
 function resetSub(){
   document.getElementById('fw').style.display='block';
   document.getElementById('sok').style.display='none';
@@ -497,11 +969,25 @@ function resetSub(){
   document.getElementById('sc').value='';
 }
 
+/* ─── SUBSCRIBE ─── */
+async function doSubscribe(){
+  const em=document.getElementById('me').value.trim();
+  if(!em||!em.includes('@')){toast('Enter a valid email');return;}
+  const{error}=await sb.from('subscribers').insert({email:em});
+  if(error?.code==='23505'){toast('Already subscribed!');return;}
+  if(error){toast('Something went wrong','err');return;}
+  document.getElementById('mf').style.display='none';
+  document.getElementById('mok').style.display='block';
+}
+
+/* ─── PAGES ─── */
 function showPage(p){
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   document.getElementById('page-'+p).classList.add('active');
   window.scrollTo(0,0);
+  if(p==='profile')loadProfilePage();
 }
+
 function openOv(id){document.getElementById('ov-'+id).classList.add('open')}
 function closeOv(id){document.getElementById('ov-'+id).classList.remove('open')}
 function ovOut(e,id){if(e.target===e.currentTarget)closeOv(id)}
