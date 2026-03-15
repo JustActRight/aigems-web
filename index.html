@@ -267,7 +267,9 @@ textarea.fi{resize:vertical;min-height:88px}
     <span class="lname">AIGems</span>
   </a>
   <div class="navr" id="navr">
-    <!-- filled by JS -->
+    <button class="btn bt-ghost" onclick="showPage('submit')">Submit a Gem</button>
+    <button class="btn bt-ghost" onclick="showPage('login')">Sign In</button>
+    <button class="btn bt-dark" onclick="showPage('signup')">Join Free</button>
   </div>
 </nav>
 
@@ -677,24 +679,31 @@ function scoreGem(gem){
 
 /* ─── INIT ─── */
 async function init(){
-  // Auth listener
-  sb.auth.onAuthStateChange(async(_,session)=>{
+  // Load gems immediately — don't wait for auth
+  sb.from('opportunities').select('*').order('created_at',{ascending:false}).then(({data})=>{
+    gems=data||[];
+    document.getElementById('tc').textContent=gems.length;
+    document.getElementById('ac').textContent=gems.filter(o=>o.status==='active').length;
+    go();
+    // Re-render For You once gems are loaded if user already resolved
+    if(user)renderPersonalised();
+  });
+  // Auth listener — fires once on load, then on every change
+  sb.auth.onAuthStateChange(async(event,session)=>{
     user=session?.user||null;
     if(user){
-      const{data}=await sb.from('user_profiles').select('*').eq('id',user.id).single();
-      profile=data;
+      try{
+        const{data}=await sb.from('user_profiles').select('*').eq('id',user.id).single();
+        profile=data;
+      }catch{profile=null;}
     }else{
       profile=null;
     }
     renderNav();
     renderPersonalised();
+    // If signed out redirect to home cleanly
+    if(event==='SIGNED_OUT')showPage('home');
   });
-  // Load gems
-  const{data}=await sb.from('opportunities').select('*').order('created_at',{ascending:false});
-  gems=data||[];
-  document.getElementById('tc').textContent=gems.length;
-  document.getElementById('ac').textContent=gems.filter(o=>o.status==='active').length;
-  go();
 }
 
 /* ─── NAV ─── */
@@ -847,8 +856,36 @@ async function doSignup(){
   const pass=document.getElementById('au-pass').value;
   if(!email||!pass){toast('Please fill in both fields','err');return;}
   if(pass.length<6){toast('Password must be at least 6 characters','err');return;}
-  const{error}=await sb.auth.signUp({email,password:pass});
-  if(error){toast(error.message,'err');return;}
+  const btn=event.target;
+  btn.textContent='Creating account...';btn.disabled=true;
+  const{data,error}=await sb.auth.signUp({email,password:pass});
+  btn.textContent='Create Account';btn.disabled=false;
+  if(error){
+    if(error.message.includes('already registered')||error.message.includes('already been registered')){
+      toast('Account exists — try signing in instead','err');
+      setTimeout(()=>showPage('login'),1500);
+    }else if(error.message.includes('rate limit')){
+      toast('Too many attempts — please wait a minute','err');
+    }else{
+      toast(error.message,'err');
+    }
+    return;
+  }
+  // Check if email confirmation is required
+  if(data?.user&&!data.session){
+    // Email confirmation required — show message
+    document.getElementById('au-email').value='';
+    document.getElementById('au-pass').value='';
+    document.querySelector('#page-signup .auth-card').innerHTML=`
+      <div style="text-align:center;padding:16px 0">
+        <div style="font-size:36px;margin-bottom:16px">📬</div>
+        <h3 style="font-size:18px;font-weight:800;margin-bottom:8px">Check your inbox</h3>
+        <p style="font-size:14px;color:var(--ink2);line-height:1.65">We sent a confirmation link to <strong>${email}</strong>. Click it to activate your account, then come back to sign in.</p>
+        <button class="btn bt-ghost" onclick="showPage('login')" style="margin-top:20px">Go to Sign In</button>
+      </div>`;
+    return;
+  }
+  // No confirmation needed — go straight to onboarding
   showPage('onboarding');
   resetOnboarding();
 }
@@ -857,18 +894,30 @@ async function doLogin(){
   const email=document.getElementById('li-email').value.trim();
   const pass=document.getElementById('li-pass').value;
   if(!email||!pass){toast('Please fill in both fields','err');return;}
+  const btn=event.target;
+  btn.textContent='Signing in...';btn.disabled=true;
   const{error}=await sb.auth.signInWithPassword({email,password:pass});
-  if(error){toast('Invalid email or password','err');return;}
+  btn.textContent='Sign In';btn.disabled=false;
+  if(error){
+    if(error.message.includes('Email not confirmed')){
+      toast('Please confirm your email first — check your inbox','err');
+    }else if(error.message.includes('Invalid login')){
+      toast('Wrong email or password','err');
+    }else{
+      toast(error.message,'err');
+    }
+    return;
+  }
   toast('Welcome back!','ok');
   showPage('home');
 }
 
 async function doLogout(){
-  await sb.auth.signOut();
-  user=null; profile=null;
-  renderNav(); renderPersonalised();
-  toast('Signed out');
-  showPage('home');
+  closeAvatarMenu();
+  const{error}=await sb.auth.signOut();
+  if(error){toast('Could not sign out','err');return;}
+  // onAuthStateChange handles the rest — sets user=null, rerenders nav, redirects home
+  toast('Signed out successfully','ok');
 }
 
 /* ─── ONBOARDING ─── */
@@ -1003,6 +1052,6 @@ function ea(s){return String(s||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;')
 
 init();
 </script>
-<script defer src="/_vercel/insights/script.js"></script>
+  <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
