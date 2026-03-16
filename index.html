@@ -372,7 +372,7 @@ textarea.fi{resize:vertical;min-height:88px}
         </div>
         <div class="dd-countdown">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          Next drop in <span class="dd-countdown-time" id="dd-timer">--:--:--</span>
+          Next drop in <span class="dd-countdown-time" id="dd-timer">--:--:--</span> <span style="font-size:11px;color:var(--ink3);font-weight:500">WAT</span>
         </div>
       </div>
       <div id="dd-grid" class="dd-grid">
@@ -1100,7 +1100,7 @@ async function markComplete(){
   go(); // Re-render main grid
   // Re-render daily drop cards too so button updates
   const today=new Date().toISOString().split('T')[0];
-  sb.from('opportunities').select('*').eq('is_daily_drop',true).eq('drop_date',today).limit(3).then(({data})=>{if(data)renderDailyDrop(data)});
+  sb.from('opportunities').select('*').eq('is_daily_drop',true).eq('drop_date',today).order('drop_order',{ascending:true}).limit(3).then(({data})=>{if(data)renderDailyDrop(data)});
   const val=gem.gem_value_usd;
   toast(val?`+$${val} added to your savings! 🪩`:'Gem marked complete! 🪩','ok');
   activeClaimGemId=null;
@@ -1113,7 +1113,7 @@ async function loadDailyDrop(){
     .select('*')
     .eq('is_daily_drop',true)
     .eq('drop_date',today)
-    .order('created_at',{ascending:true})
+    .order('drop_order',{ascending:true})
     .limit(3);
   renderDailyDrop(data||[]);
   startDropCountdown();
@@ -1163,9 +1163,11 @@ function mkDropCard(o,num){
 function startDropCountdown(){
   function update(){
     const now=new Date();
-    const midnight=new Date(now);
-    midnight.setUTCHours(24,0,0,0);
-    const diff=midnight-now;
+    // WAT = UTC+1 — midnight WAT = 23:00 UTC previous day
+    const nowWAT=new Date(now.getTime()+60*60*1000); // shift to WAT
+    const midnightWAT=new Date(nowWAT);
+    midnightWAT.setUTCHours(24,0,0,0); // next midnight in WAT terms
+    const diff=midnightWAT-nowWAT;
     const h=Math.floor(diff/3600000);
     const m=Math.floor((diff%3600000)/60000);
     const s=Math.floor((diff%60000)/1000);
@@ -1459,5 +1461,6 @@ function ea(s){return String(s||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;')
 
 init();
 </script>
+  <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
