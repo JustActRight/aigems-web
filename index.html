@@ -250,6 +250,24 @@ textarea.fi{resize:vertical;min-height:88px}
 .modal h2{font-size:22px;font-weight:800;letter-spacing:-.6px;margin-bottom:6px}
 .modal>p{font-size:14px;color:var(--ink2);margin-bottom:24px;line-height:1.6}
 
+/* ── DAILY DROP ── */
+.dd-wrap{max-width:1120px;margin:0 auto;padding:0 24px 32px}
+.dd-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.dd-left{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.dd-title{font-size:20px;font-weight:800;letter-spacing:-.5px;display:flex;align-items:center;gap:8px}
+.dd-fire{font-size:20px;animation:flicker 2.5s ease-in-out infinite}
+@keyframes flicker{0%,100%{opacity:1;transform:scale(1)}40%{opacity:.85;transform:scale(.97)}70%{opacity:1;transform:scale(1.03)}}
+.dd-badge{background:var(--ink);color:#fff;border-radius:100px;padding:3px 12px;font-size:11.5px;font-weight:700;letter-spacing:.3px}
+.dd-countdown{display:flex;align-items:center;gap:7px;background:var(--w);border:1.5px solid var(--br);border-radius:100px;padding:6px 14px;font-size:12.5px;font-weight:600;color:var(--ink2);box-shadow:var(--sh)}
+.dd-countdown-time{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:800;letter-spacing:-.3px;min-width:52px}
+.dd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.dd-card{background:var(--w);border:2px solid var(--ink);border-radius:var(--rl);padding:22px;display:flex;flex-direction:column;gap:11px;position:relative;box-shadow:4px 4px 0 var(--ink);transition:transform .15s,box-shadow .15s}
+.dd-card:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+.dd-card.exp{opacity:.4;pointer-events:none}
+.dd-num{position:absolute;top:-10px;left:18px;background:var(--ink);color:#fff;border-radius:100px;padding:2px 10px;font-size:11px;font-weight:800;letter-spacing:.5px}
+.dd-fallback{background:var(--w);border:1.5px solid var(--br);border-radius:var(--rl);padding:40px;text-align:center;box-shadow:var(--sh)}
+.dd-fallback p{font-size:14px;color:var(--ink3);margin-top:8px}
+
 /* ── CLAIM MODAL ── */
 .claim-modal{max-width:480px}
 .claim-modal-header{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px}
@@ -339,6 +357,28 @@ textarea.fi{resize:vertical;min-height:88px}
     <div class="scard"><div class="sc-n" id="ac">—</div><div class="sc-l">Active Now</div></div>
     <div class="scard"><div class="sc-n">7</div><div class="sc-l">Categories</div></div>
     <div class="scard"><div class="sc-n">4hr</div><div class="sc-l">Refresh Rate</div></div>
+  </div>
+
+  <!-- DAILY DROP -->
+  <div id="dd-section">
+    <div class="dd-wrap">
+      <div class="dd-head">
+        <div class="dd-left">
+          <div class="dd-title">
+            <span class="dd-fire">🔥</span>
+            Today's Drop
+          </div>
+          <span class="dd-badge">3 gems · refreshes daily</span>
+        </div>
+        <div class="dd-countdown">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Next drop in <span class="dd-countdown-time" id="dd-timer">--:--:--</span>
+        </div>
+      </div>
+      <div id="dd-grid" class="dd-grid">
+        <!-- filled by JS -->
+      </div>
+    </div>
   </div>
 
   <!-- SAVINGS BANNER (logged in only) -->
@@ -800,6 +840,7 @@ async function init(){
     document.getElementById('tc').textContent=gems.length;
     document.getElementById('ac').textContent=gems.filter(o=>o.status==='active').length;
     go();
+    loadDailyDrop();
   }catch(err){
     console.error('Gems load failed:',err);
     document.getElementById('grid').innerHTML='<div class="empty"><h3>Could not load gems</h3><p>Please refresh the page.</p></div>';
@@ -1056,10 +1097,83 @@ async function markComplete(){
   claimedGems.add(activeClaimGemId);
   closeOv('claim');
   renderSavings();
-  go(); // Re-render cards to show Completed ✓
+  go(); // Re-render main grid
+  // Re-render daily drop cards too so button updates
+  const today=new Date().toISOString().split('T')[0];
+  sb.from('opportunities').select('*').eq('is_daily_drop',true).eq('drop_date',today).limit(3).then(({data})=>{if(data)renderDailyDrop(data)});
   const val=gem.gem_value_usd;
   toast(val?`+$${val} added to your savings! 🪩`:'Gem marked complete! 🪩','ok');
   activeClaimGemId=null;
+}
+
+/* ─── DAILY DROP ─── */
+async function loadDailyDrop(){
+  const today=new Date().toISOString().split('T')[0];
+  const{data}=await sb.from('opportunities')
+    .select('*')
+    .eq('is_daily_drop',true)
+    .eq('drop_date',today)
+    .order('created_at',{ascending:true})
+    .limit(3);
+  renderDailyDrop(data||[]);
+  startDropCountdown();
+}
+
+function renderDailyDrop(drops){
+  const grid=document.getElementById('dd-grid');
+  if(!drops.length){
+    grid.innerHTML=`<div class="dd-fallback">
+      <div style="font-size:28px">🌙</div>
+      <p>Today's drop is being curated — check back soon.</p>
+    </div>`;
+    return;
+  }
+  grid.innerHTML=drops.map((o,i)=>mkDropCard(o,i+1)).join('');
+}
+
+function mkDropCard(o,num){
+  const claimed=claimedGems.has(o.id);
+  const ex=o.status==='expired';
+  const valueBadge=o.gem_value_usd?`<span class="gem-value">💰 $${o.gem_value_usd}</span>`:'';
+  const claimBtn=ex
+    ?`<button class="bgrab" disabled>Expired</button>`
+    :claimed
+      ?`<button class="bclaim claimed" disabled>Completed ✓</button>`
+      :`<button class="bclaim" onclick="openClaimModal('${o.id}')">Start Claiming →</button>`;
+  return`<div class="dd-card${ex?' exp':''}">
+    <div class="dd-num">Drop #${num}</div>
+    <div class="ctop" style="margin-top:8px">
+      <span class="cbadge cb-${o.category}">${o.category}</span>
+      ${o.verified?'<span style="color:var(--g400);font-size:11px;font-weight:700">✓ Verified</span>':''}
+    </div>
+    <div class="ctitle">${e(o.title)}</div>
+    <div class="cdesc">${e(o.description)}</div>
+    <div class="cmeta">
+      <div class="csrc"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>${e(o.source_name)}</div>
+      <div style="display:flex;align-items:center;gap:6px">${valueBadge}${o.expiry_date?expB(o.expiry_date):''}</div>
+    </div>
+    <div class="cfoot">
+      ${claimBtn}
+      <button class="bgrab" style="flex:none;padding:10px 14px" onclick="grab('${ea(o.source_url)}')" title="Open">↗</button>
+      <button class="bshr" onclick="shr('${ea(o.title)}','${ea(o.source_url)}')" title="Share"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>
+    </div>
+  </div>`;
+}
+
+function startDropCountdown(){
+  function update(){
+    const now=new Date();
+    const midnight=new Date(now);
+    midnight.setUTCHours(24,0,0,0);
+    const diff=midnight-now;
+    const h=Math.floor(diff/3600000);
+    const m=Math.floor((diff%3600000)/60000);
+    const s=Math.floor((diff%60000)/1000);
+    const el=document.getElementById('dd-timer');
+    if(el)el.textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+  update();
+  setInterval(update,1000);
 }
 
 /* ─── FILTERS ─── */
