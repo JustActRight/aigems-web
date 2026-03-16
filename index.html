@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AIGems — Never Miss a Free AI Opportunity</title>
+<meta name="description" content="Free automated radar that surfaces free AI credits, beta access, courses and tools — personalised for developers, designers, researchers and students. Updated every 4 hours.">
+<meta property="og:title" content="AIGems — Never Miss a Free AI Opportunity">
+<meta property="og:description" content="57+ free AI gems. Personalised for your niche. Auto-updated every 4 hours.">
+<meta property="og:image" content="https://aigems-web.vercel.app/og-image.png">
+<meta property="og:url" content="https://aigems-web.vercel.app">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AIGems — Never Miss a Free AI Opportunity">
+<meta name="twitter:description" content="Free radar for AI credits, beta access, courses & tools. Personalised for you. Updated every 4 hours.">
+<meta name="twitter:image" content="https://aigems-web.vercel.app/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -343,7 +353,7 @@ textarea.fi{resize:vertical;min-height:88px}
     <div class="hero">
       <div class="htag"><span class="live-dot"></span>Live radar — scanning every 4 hours</div>
       <h1>Never miss a<br><span>free AI</span><br>opportunity.</h1>
-      <p class="hero-sub">We scan company blogs, newsletters and developer communities so you always find free credits, beta access, courses and deals — before they expire.</p>
+      <p class="hero-sub">Tell us your niche — Developer, Designer, Researcher, Creator or Entrepreneur — and get a <strong style="color:var(--ink);font-weight:700">personalised feed</strong> of free AI credits, beta access, courses and deals matched to you. Auto-updated every 4 hours.</p>
       <div class="sbox">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         <input type="text" id="search" placeholder="Search — try 'credits', 'ElevenLabs'..." oninput="go()">
@@ -867,6 +877,9 @@ async function init(){
     renderNav();
     renderPersonalised();
     renderSavings();
+    // Always re-render the main grid after auth change
+    // so claimed states update and filters still work
+    if(gems.length) go();
     if(event==='SIGNED_OUT'){
       showPage('home');
       window.scrollTo(0,0);
