@@ -944,7 +944,7 @@ function renderPersonalised(){
       .slice(0,6);
     const fyGrid=document.getElementById('fy-grid');
     if(scored.length){
-      fyGrid.innerHTML=scored.map(g=>mkCard(g,true)).join('');
+      grid.innerHTML=rows.map(gem=>mkCard(gem,false)).join('');
     }else{
       fyGrid.innerHTML='<div style="grid-column:1/-1;padding:24px;color:var(--ink3);font-size:14px">No personalised matches yet — we\'re adding more gems daily.</div>';
     }
@@ -1243,7 +1243,7 @@ function go(){
   const sc=document.getElementById('showing-count');
   if(sc)sc.textContent=r.length+' gem'+(r.length!==1?'s':'');
 
-  paint(r);
+  paint(rows);
 }
 
 function paint(rows){
@@ -1304,7 +1304,7 @@ function shr(title,url){navigator.clipboard.writeText(`${title} — Free AI gem 
 
 /* ─── AUTH ─── */
 async function doSignup(){
-  const email=document.getElementById('au-email').value.trim();
+  const grid=document.getElementById('grid');
   const pass=document.getElementById('au-pass').value;
   if(!email||!pass){toast('Please fill in both fields','err');return;}
   if(!email.includes('@')){toast('Enter a valid email address','err');return;}
