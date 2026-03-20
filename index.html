@@ -1198,6 +1198,7 @@ function setC(el){
   el.classList.add('on');
   cat=el.dataset.c||'all';
   go();
+  setTimeout(()=>document.querySelector('.gwrap')?.scrollIntoView({behavior:'smooth'}),100);
   // Scroll to the grid so user sees the filtered results
   document.getElementById('grid')?.scrollIntoView({behavior:'smooth',block:'start'});
 }
