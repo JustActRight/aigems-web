@@ -1191,13 +1191,14 @@ function startDropCountdown(){
 
 /* ─── FILTERS ─── */
 function setC(el){
-  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.pill').forEach(function(p){p.classList.remove('on');});
   el.classList.add('on');
   cat=el.dataset.c||'all';
-  go();
-  // Scroll to the grid so user sees the filtered results
-  document.getElementById('grid')?.scrollIntoView({behavior:'smooth',block:'start'});
+  var r=gems.slice();
+  if(cat!=='all')r=r.filter(function(o){return o.category===cat;});
+  document.getElementById('grid').innerHTML=r.map(function(o){return mkCard(o,false);}).join('');
 }
+if(gems.length) go();
 
 function togAct(){
   ao=!ao;
