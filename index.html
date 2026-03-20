@@ -881,7 +881,6 @@ async function init(){
     renderSavings();
     // Always re-render the main grid after auth change
     // so claimed states update and filters still work
-    if(gems.length) go();
     if(event==='SIGNED_OUT'){
       showPage('home');
       window.scrollTo(0,0);
