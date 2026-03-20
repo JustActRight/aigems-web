@@ -1210,16 +1210,16 @@ function togAct(){
 }
 
 function go(){
-  var s=document.getElementById('srt')?document.getElementById('srt').value:'new';
-  var q=document.getElementById('search')?document.getElementById('search').value.toLowerCase().trim():'';
-  var r=gems.slice();
-  if(cat!=='all')r=r.filter(function(o){return o.category===cat;});
-  if(ao)r=r.filter(function(o){return o.status!=='expired';});
-  if(q)r=r.filter(function(o){return(o.title||'').toLowerCase().includes(q)||(o.description||'').toLowerCase().includes(q);});
-  if(s==='exp')r.sort(function(a,b){return !a.expiry_date?1:!b.expiry_date?-1:new Date(a.expiry_date)-new Date(b.expiry_date);});
-  if(s==='pop')r.sort(function(a,b){return(b.clicks||0)-(a.clicks||0);});
-  var sc=document.getElementById('showing-count');
-  if(sc)sc.textContent=r.length+' gem'+(r.length!==1?'s':'');
+  var s = document.getElementById('srt') ? document.getElementById('srt').value : 'new';
+  var q = document.getElementById('search') ? document.getElementById('search').value.toLowerCase().trim() : '';
+  var r = gems.slice();
+  if(cat !== 'all') r = r.filter(function(o){ return o.category === cat; });
+  if(ao) r = r.filter(function(o){ return o.status !== 'expired'; });
+  if(q) r = r.filter(function(o){ return (o.title||'').toLowerCase().includes(q)||(o.description||'').toLowerCase().includes(q); });
+  if(s==='exp') r.sort(function(a,b){ return !a.expiry_date?1:!b.expiry_date?-1:new Date(a.expiry_date)-new Date(b.expiry_date); });
+  if(s==='pop') r.sort(function(a,b){ return (b.clicks||0)-(a.clicks||0); });
+  var sc = document.getElementById('showing-count');
+  if(sc) sc.textContent = r.length+' gem'+(r.length!==1?'s':'');
   paint(r);
 }
 
