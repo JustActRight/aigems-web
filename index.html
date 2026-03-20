@@ -1198,7 +1198,6 @@ function setC(el){
   if(cat!=='all')r=r.filter(function(o){return o.category===cat;});
   document.getElementById('grid').innerHTML=r.map(function(o){return mkCard(o,false);}).join('');
 }
-if(gems.length) go();
 
 function togAct(){
   ao=!ao;
